@@ -30,20 +30,37 @@
                 <h1 class="text-2xl font-bold text-gray-dark text-center">Masuk Admin</h1>
                 <p class="text-gray-txt text-center mt-2 mb-8">Silakan masuk untuk mengakses dashboard Wibu Store.</p>
 
-                <form method="POST" action="#" class="space-y-4">
+                <form method="POST" action="{{ route('back-office.login.authenticate') }}" class="space-y-4">
+                    @csrf
+
+                    @if ($errors->any())
+                        <div class="rounded-md bg-red-50 border border-red-200 px-4 py-3">
+                            <ul class="list-disc list-inside text-sm text-red-700">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <div>
                         <label for="email" class="block text-sm font-semibold text-gray-dark mb-1">Email</label>
                         <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
                             placeholder="Masukkan email"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm @error('email') border-red-400 @enderror">
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="password" class="block text-sm font-semibold text-gray-dark mb-1">Password</label>
                         <input type="password" id="password" name="password" required
                             placeholder="Masukkan password"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm @error('password') border-red-400 @enderror">
+                        @error('password')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="flex items-center justify-between">
