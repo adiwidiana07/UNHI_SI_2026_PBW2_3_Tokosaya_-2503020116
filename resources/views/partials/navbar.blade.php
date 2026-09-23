@@ -30,7 +30,7 @@
             <div class="hidden lg:flex items-center space-x-4 relative">
               <a href="{{ url('/register') }}"
                   class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Register</a>
-              <a href="{{ url('/login') }}"
+              <a href="{{ route('back-office.login') }}"
                   class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Login</a>
               <div class="relative group cart-wrapper">
                   <a href="{{ url('/cart') }}" >
