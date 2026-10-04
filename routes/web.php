@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\BackOffice\AuthController;
 use App\Http\Controllers\BackOffice\DashboardController;
+use App\Http\Controllers\BackOffice\KategoriController;
 use App\Http\Controllers\HalamanController;
 use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\BackOffice\KategoriController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HalamanController::class, 'home'])->name('home');
@@ -22,5 +22,8 @@ Route::prefix('back-office')->name('back-office.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('admin')
         ->name('dashboard');
+
+    Route::middleware('admin')->group(function () {
+        Route::resource('kategori', KategoriController::class)->except(['show']);
+    });
 });
-       Route::resource('kategori', KategoriController::class)->except(['show']);

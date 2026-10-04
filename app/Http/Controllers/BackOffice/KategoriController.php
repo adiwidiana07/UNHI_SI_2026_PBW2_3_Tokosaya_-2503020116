@@ -30,7 +30,6 @@ class KategoriController extends Controller
     {
         $data = $request->validate([
             'nama_kategori' => ['required', 'string', 'max:100', 'unique:kategoris,nama_kategori'],
-            'deskripsi'     => ['nullable', 'string'],
         ], [
             'nama_kategori.required' => 'Nama kategori wajib diisi.',
             'nama_kategori.unique'   => 'Kategori dengan nama itu sudah ada.',
@@ -42,7 +41,7 @@ class KategoriController extends Controller
         Kategori::create($data);
 
         return redirect()
-            ->route('back_office.kategori.index')
+            ->route('back-office.kategori.index')
             ->with('sukses', 'Kategori berhasil ditambahkan.');
     }
 
@@ -68,7 +67,7 @@ class KategoriController extends Controller
         $kategori->update($data);
 
         return redirect()
-            ->route('back_office.kategori.index')
+            ->route('back-office.kategori.index')
             ->with('sukses', 'Kategori berhasil diperbarui.');
     }
 
@@ -78,14 +77,14 @@ class KategoriController extends Controller
         // Jangan hapus kategori yang masih punya produk
         if ($kategori->produks()->count() > 0) {
             return redirect()
-                ->route('back_office.kategori.index')
+                ->route('back-office.kategori.index')
                 ->with('gagal', 'Kategori tidak bisa dihapus karena masih memiliki produk.');
         }
 
         $kategori->delete();
 
         return redirect()
-            ->route('back_office.kategori.index')
+            ->route('back-office.kategori.index')
             ->with('sukses', 'Kategori berhasil dihapus.');
     }
 }

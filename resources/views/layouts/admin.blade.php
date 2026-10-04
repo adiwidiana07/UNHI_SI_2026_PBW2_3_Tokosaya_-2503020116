@@ -439,6 +439,12 @@
                   <p>Katalog Produk</p>
                 </a>
               </li>
+                <li class="nav-item">
+                <a href="{{ route('back-office.kategori.index') }}" class="nav-link {{ request()->routeIs('back-office.kategori.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-tags"></i>
+                  <p>Kategori</p>
+                </a>
+              </li>
               <li class="nav-header">AKUN</li>
               <li class="nav-item">
                 <form method="POST" action="{{ route('back-office.logout') }}" onsubmit="return confirm('Yakin ingin keluar dari back office?');">
@@ -485,6 +491,20 @@
         <div class="app-content">
           <!--begin::Container-->
           <div class="container-fluid">
+            @if (session('sukses'))
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('sukses') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @endif
+
+            @if (session('gagal'))
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('gagal') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @endif
+
             @yield('content')
           </div>
           <!--end::Container-->
