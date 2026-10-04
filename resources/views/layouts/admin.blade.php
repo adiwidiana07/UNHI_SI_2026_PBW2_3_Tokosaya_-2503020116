@@ -434,7 +434,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('produk.index') }}" class="nav-link" target="_blank">
+                <a href="{{ route('back-office.produk.index') }}" class="nav-link {{ request()->routeIs('back-office.produk.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-box-seam"></i>
                   <p>Katalog Produk</p>
                 </a>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BackOffice\AuthController;
 use App\Http\Controllers\BackOffice\DashboardController;
 use App\Http\Controllers\BackOffice\KategoriController;
+use App\Http\Controllers\BackOffice\ProdukController as ProdukBackOffice;
 use App\Http\Controllers\HalamanController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,6 @@ Route::prefix('back-office')->name('back-office.')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::resource('kategori', KategoriController::class)->except(['show']);
+        Route::resource('produk', ProdukBackOffice::class)->except(['show']);
     });
 });

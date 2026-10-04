@@ -43,10 +43,10 @@
         <div class="col-lg-3 col-6">
             <div class="small-box text-bg-warning">
                 <div class="inner">
-                    <h3>{{ $ringkasan['pesanan_baru'] }}</h3>
-                    <p>Pesanan Baru</p>
+                    <h3>{{ $ringkasan['produk_aktif'] }}</h3>
+                    <p>Produk Aktif</p>
                 </div>
-                <i class="small-box-icon bi bi-cart-fill"></i>
+                <i class="small-box-icon bi bi-check-circle-fill"></i>
             </div>
         </div>
         <div class="col-lg-3 col-6">
