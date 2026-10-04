@@ -103,51 +103,37 @@
         <div class="container mx-auto px-4">
             <h2 class="text-2xl font-bold mb-8">Popular products</h2>
             <div class="flex flex-wrap -mx-4">
-                @foreach ($produkPopuler as $produk)
+                @forelse ($produkPopuler as $produk)
                     <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
                         <div class="bg-white p-3 rounded-lg shadow-lg">
-                            <a href="{{ route('produk.show', $produk['id']) }}">
-                                <img src="{{ asset($produk['gambar']) }}" alt="{{ $produk['nama'] }}" class="w-full object-cover mb-4 rounded-lg">
-                            </a>
-                            <a href="{{ route('produk.show', $produk['id']) }}" class="text-lg font-semibold mb-2">{{ $produk['nama'] }}</a>
-                            <p class="my-2">{{ $produk['kategori'] }}</p>
-                            <div class="flex items-center mb-4">
-                                <span class="text-lg font-bold text-primary">${{ number_format($produk['harga'], 2) }}</span>
-                                @if (! empty($produk['harga_asli']))
-                                    <span class="text-sm line-through ml-2">${{ number_format($produk['harga_asli'], 2) }}</span>
-                                @endif
-                            </div>
-                            <a href="{{ route('produk.show', $produk['id']) }}" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">Add to Cart</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 
-    <!-- Latest product section -->
-    <section id="latest-products" class="py-10">
-        <div class="container mx-auto px-4">
-            <h2 class="text-2xl font-bold mb-8">Latest products</h2>
-            <div class="flex flex-wrap -mx-4">
-                @foreach ($produkTerbaru as $produk)
-                    <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
-                        <div class="bg-white p-3 rounded-lg shadow-lg">
-                            <a href="{{ route('produk.show', $produk['id']) }}">
-                                <img src="{{ asset($produk['gambar']) }}" alt="{{ $produk['nama'] }}" class="w-full object-cover mb-4 rounded-lg">
+                            @if ($produk->gambar)
+                                <a href="{{ route('produk.show', $produk) }}">
+                                    <img src="{{ asset('storage/' . $produk->gambar) }}" alt="{{ $produk->nama_produk }}"
+                                        class="w-full object-cover mb-4 rounded-lg">
+                                </a>
+                            @endif
+
+                            <a href="{{ route('produk.show', $produk) }}" class="text-lg font-semibold mb-2">
+                                {{ $produk->nama_produk }}
                             </a>
-                            <a href="{{ route('produk.show', $produk['id']) }}" class="text-lg font-semibold mb-2">{{ $produk['nama'] }}</a>
-                            <p class="my-2">{{ $produk['kategori'] }}</p>
+
+                            <p class="my-2">{{ $produk->kategori->nama_kategori }}</p>
+
                             <div class="flex items-center mb-4">
-                                <span class="text-lg font-bold text-primary">${{ number_format($produk['harga'], 2) }}</span>
-                                @if (! empty($produk['harga_asli']))
-                                    <span class="text-sm line-through ml-2">${{ number_format($produk['harga_asli'], 2) }}</span>
+                                <span class="text-lg font-bold text-primary">{{ $produk->hargaRupiah() }}</span>
+
+                                @if ($produk->hargaCoretRupiah())
+                                    <span class="text-sm line-through ml-2">{{ $produk->hargaCoretRupiah() }}</span>
                                 @endif
                             </div>
-                            <a href="{{ route('produk.show', $produk['id']) }}" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">Add to Cart</a>
+
+                            <a href="{{ route('produk.show', $produk) }}" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">Add to Cart</a>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="w-full text-center text-gray-txt">Belum ada produk tersedia.</p>
+                @endforelse
             </div>
         </div>
     </section>

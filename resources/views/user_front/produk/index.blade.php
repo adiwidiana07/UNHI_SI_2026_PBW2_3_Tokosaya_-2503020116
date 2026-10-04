@@ -50,26 +50,14 @@
                     <div class="mb-6 pb-8 border-b border-gray-line">
                         <h3 class="text-lg font-semibold mb-6">Category</h3>
                         <div class="space-y-2">
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox custom-checkbox">
-                                <span class="ml-2">Figure</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox custom-checkbox">
-                                <span class="ml-2">Gunpla</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox custom-checkbox">
-                                <span class="ml-2">Manga</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox custom-checkbox">
-                                <span class="ml-2">Accessories</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox custom-checkbox">
-                                <span class="ml-2">Gaming</span>
-                            </label>
+                            @forelse ($daftarKategori as $kategori)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox custom-checkbox">
+                                    <span class="ml-2">{{ $kategori->nama_kategori }}</span>
+                                </label>
+                            @empty
+                                <span class="text-sm text-gray-txt">Belum ada kategori.</span>
+                            @endforelse
                         </div>
                     </div>
                     <!-- Brand Filter -->
@@ -117,49 +105,34 @@
                 <div class="w-full md:w-3/4 p-4">
                     <!-- Products grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        @foreach ($daftarProduk as $produk)
+                        @forelse ($daftarProduk as $produk)
                             <div class="bg-white p-4 rounded-lg shadow">
-                                <a href="{{ route('produk.show', $produk['id']) }}">
-                                    <img src="{{ asset($produk['gambar']) }}" alt="{{ $produk['nama'] }}"
-                                        class="w-full object-cover mb-4 rounded-lg">
-                                </a>
-                                <a href="{{ route('produk.show', $produk['id']) }}"
-                                    class="text-lg font-semibold mb-2 block">{{ $produk['nama'] }}</a>
-                                <p class="my-2">{{ $produk['kategori'] }}</p>
+                                @if ($produk->gambar)
+                                    <a href="{{ route('produk.show', $produk) }}">
+                                        <img src="{{ asset('storage/' . $produk->gambar) }}" alt="{{ $produk->nama_produk }}"
+                                            class="w-full object-cover mb-4 rounded-lg">
+                                    </a>
+                                @endif
+                                <a href="{{ route('produk.show', $produk) }}"
+                                    class="text-lg font-semibold mb-2 block">{{ $produk->nama_produk }}</a>
+                                <p class="my-2">{{ $produk->kategori->nama_kategori }}</p>
                                 <div class="flex items-center mb-4">
-                                    <span class="text-lg font-bold {{ ! empty($produk['harga_asli']) ? 'text-primary' : 'text-gray-900' }}">${{ number_format($produk['harga'], 2) }}</span>
-                                    @if (! empty($produk['harga_asli']))
-                                        <span class="text-sm line-through ml-2">${{ number_format($produk['harga_asli'], 2) }}</span>
+                                    <span class="text-lg font-bold {{ $produk->harga_coret ? 'text-primary' : 'text-gray-900' }}">{{ $produk->hargaRupiah() }}</span>
+                                    @if ($produk->hargaCoretRupiah())
+                                        <span class="text-sm line-through ml-2">{{ $produk->hargaCoretRupiah() }}</span>
                                     @endif
                                 </div>
-                                <a href="{{ route('produk.show', $produk['id']) }}"
+                                <a href="{{ route('produk.show', $produk) }}"
                                     class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">Add
                                     to Cart</a>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="col-span-full text-center text-gray-txt">Belum ada produk tersedia.</p>
+                        @endforelse
                     </div>
                     <!-- Pagination -->
-                    <div class="flex justify-center mt-8">
-                        <nav aria-label="Page navigation">
-                            <ul class="inline-flex space-x-2">
-                                <li>
-                                    <a href="#"
-                                        class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full">1</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white">2</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white">3</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
+                    <div class="mt-8">
+                        {{ $daftarProduk->links() }}
                     </div>
                 </div>
             </div>

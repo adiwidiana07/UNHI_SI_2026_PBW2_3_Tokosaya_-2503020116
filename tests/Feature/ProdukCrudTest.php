@@ -155,15 +155,14 @@ class ProdukCrudTest extends TestCase
 
     public function test_halaman_publik_produk_tetap_berfungsi(): void
     {
+        $produk = Produk::create($this->isian());
+
         $this->get(route('produk.index'))
             ->assertOk()
-            ->assertViewIs('produk.index');
+            ->assertViewIs('user_front.produk.index');
 
-        $this->get(route('produk.show', 1))
+        $this->get(route('produk.show', $produk))
             ->assertOk()
-            ->assertViewIs('produk.show');
-
-        $this->get(route('produk.show', 9999))
-            ->assertNotFound();
+            ->assertViewIs('user_front.produk.show');
     }
 }

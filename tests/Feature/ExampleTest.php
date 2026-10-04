@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    // Beranda kini membaca dari database, jadi tabel harus disiapkan dulu
+    use RefreshDatabase;
     /**
      * A basic test example.
      */
