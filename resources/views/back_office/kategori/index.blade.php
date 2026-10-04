@@ -17,6 +17,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Kategori</th>
+                                    <th>Deskripsi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -25,6 +26,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nama_kategori }}</td>
+                                        <td>{{ $item->deskripsi }}</td>
                                         <td>
                                             <a href="{{ route('back-office.kategori.edit', $item->id) }}" class="btn btn-warning">Edit</a>
                                             <form action="{{ route('back-office.kategori.destroy', $item->id) }}" method="POST" style="display: inline-block;">

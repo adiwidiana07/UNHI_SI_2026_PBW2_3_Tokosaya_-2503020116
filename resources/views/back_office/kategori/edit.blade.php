@@ -27,6 +27,10 @@
                             <input type="text" name="nama_kategori" id="nama_kategori" class="form-control"
                                 value="{{ old('nama_kategori', $kategori->nama_kategori) }}" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea name="deskripsi" id="deskripsi" class="form-control">{{ old('deskripsi', $kategori->deskripsi) }}</textarea>
+                        </div>
                         <button type="submit" class="btn btn-primary">Perbarui</button>
                         <a href="{{ route('back-office.kategori.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
