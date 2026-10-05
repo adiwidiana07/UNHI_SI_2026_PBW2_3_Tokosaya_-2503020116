@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class KategoriController extends Controller
 {
@@ -57,10 +58,16 @@ class KategoriController extends Controller
     {
         $data = $request->validate([
             'nama_kategori' => [
-                'required', 'string', 'max:100',
-                'unique:kategoris,nama_kategori,' . $kategori->id,
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('kategoris', 'nama_kategori')->ignore($kategori->id),
             ],
             'deskripsi' => ['nullable', 'string'],
+        ], [
+            'nama_kategori.required' => 'Nama kategori wajib diisi.',
+            'nama_kategori.unique'   => 'Kategori dengan nama itu sudah ada.',
+            'nama_kategori.max'      => 'Nama kategori maksimal 100 karakter.',
         ]);
 
         $data['slug'] = Str::slug($data['nama_kategori']);

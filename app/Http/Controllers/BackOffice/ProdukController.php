@@ -8,6 +8,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProdukController extends Controller
 {
@@ -30,7 +31,7 @@ class ProdukController extends Controller
     /** Menyimpan produk baru */
     public function store(Request $request)
     {
-        $data = $this->periksaIsian($request);
+        $data = $this->periksaIsian($request, null);
 
         // Simpan gambar bila ada
         if ($request->hasFile('gambar')) {
@@ -57,7 +58,7 @@ class ProdukController extends Controller
     /** Menyimpan perubahan */
     public function update(Request $request, Produk $produk)
     {
-        $data = $this->periksaIsian($request);
+        $data = $this->periksaIsian($request, $produk);
 
         if ($request->hasFile('gambar')) {
 
@@ -95,12 +96,27 @@ class ProdukController extends Controller
      * Aturan validasi dipakai oleh store dan update,
      * jadi ditulis sekali saja di sini.
      */
-    private function periksaIsian(Request $request): array
+    private function periksaIsian(Request $request, ?Produk $produk = null): array
     {
+        // Kosongkan kode_produk jadi null agar tidak dianggap duplikat saat unique check
+        if (! $request->filled('kode_produk')) {
+            $request->merge(['kode_produk' => null]);
+        }
+
         return $request->validate([
             'kategori_id'  => ['required', 'exists:kategoris,id'],
-            'nama_produk'  => ['required', 'string', 'max:200'],
-            'kode_produk'  => ['nullable', 'string', 'max:50'],
+            'nama_produk'  => [
+                'required',
+                'string',
+                'max:200',
+                Rule::unique('produks', 'nama_produk')->ignore($produk?->id),
+            ],
+            'kode_produk'  => [
+                'nullable',
+                'string',
+                'max:50',
+                Rule::unique('produks', 'kode_produk')->ignore($produk?->id),
+            ],
             'deskripsi'    => ['nullable', 'string'],
             'harga'        => ['required', 'numeric', 'min:0'],
             'harga_coret'  => ['nullable', 'numeric', 'min:0', 'gt:harga'],
@@ -111,6 +127,10 @@ class ProdukController extends Controller
         ], [
             'kategori_id.required' => 'Kategori wajib dipilih.',
             'nama_produk.required' => 'Nama produk wajib diisi.',
+            'nama_produk.unique'   => 'Produk dengan nama itu sudah ada.',
+            'nama_produk.max'      => 'Nama produk maksimal 200 karakter.',
+            'kode_produk.unique'   => 'Kode produk ini sudah dipakai produk lain.',
+            'kode_produk.max'      => 'Kode produk maksimal 50 karakter.',
             'harga.required'       => 'Harga wajib diisi.',
             'harga.numeric'        => 'Harga harus berupa angka.',
             'harga_coret.gt'       => 'Harga coret harus lebih besar dari harga jual.',

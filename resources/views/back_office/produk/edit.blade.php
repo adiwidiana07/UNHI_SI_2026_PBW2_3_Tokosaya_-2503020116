@@ -26,13 +26,16 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="nama_produk" class="form-label">Nama Produk</label>
-                                <input type="text" name="nama_produk" id="nama_produk" class="form-control"
+                                <input type="text" name="nama_produk" id="nama_produk" class="form-control @error('nama_produk') is-invalid @enderror"
                                     value="{{ old('nama_produk', $produk->nama_produk) }}" required>
+                                @error('nama_produk')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="kategori_id" class="form-label">Kategori</label>
-                                <select name="kategori_id" id="kategori_id" class="form-select" required>
+                                <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
                                     <option value="">-- Pilih Kategori --</option>
                                     @foreach ($daftarKategori as $kategori)
                                         <option value="{{ $kategori->id }}" @selected(old('kategori_id', $produk->kategori_id) == $kategori->id)>
@@ -40,44 +43,65 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('kategori_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="kode_produk" class="form-label">Kode Produk</label>
-                                <input type="text" name="kode_produk" id="kode_produk" class="form-control"
+                                <input type="text" name="kode_produk" id="kode_produk" class="form-control @error('kode_produk') is-invalid @enderror"
                                     value="{{ old('kode_produk', $produk->kode_produk) }}">
+                                @error('kode_produk')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="harga" class="form-label">Harga</label>
-                                <input type="number" name="harga" id="harga" class="form-control" step="0.01" min="0"
+                                <input type="number" name="harga" id="harga" class="form-control @error('harga') is-invalid @enderror" step="0.01" min="0"
                                     value="{{ old('harga', $produk->harga) }}" required>
+                                @error('harga')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="harga_coret" class="form-label">Harga Coret</label>
-                                <input type="number" name="harga_coret" id="harga_coret" class="form-control" step="0.01" min="0"
+                                <input type="number" name="harga_coret" id="harga_coret" class="form-control @error('harga_coret') is-invalid @enderror" step="0.01" min="0"
                                     value="{{ old('harga_coret', $produk->harga_coret) }}">
+                                @error('harga_coret')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="stok" class="form-label">Stok</label>
-                                <input type="number" name="stok" id="stok" class="form-control" min="0"
+                                <input type="number" name="stok" id="stok" class="form-control @error('stok') is-invalid @enderror" min="0"
                                     value="{{ old('stok', $produk->stok) }}" required>
+                                @error('stok')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="berat" class="form-label">Berat (gram)</label>
-                                <input type="number" name="berat" id="berat" class="form-control" min="0"
+                                <input type="number" name="berat" id="berat" class="form-control @error('berat') is-invalid @enderror" min="0"
                                     value="{{ old('berat', $produk->berat) }}" required>
+                                @error('berat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="status" class="form-label">Status</label>
-                                <select name="status" id="status" class="form-select" required>
+                                <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                                     <option value="aktif" @selected(old('status', $produk->status) === 'aktif')>Aktif</option>
                                     <option value="nonaktif" @selected(old('status', $produk->status) === 'nonaktif')>Nonaktif</option>
                                 </select>
+                                @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
@@ -87,13 +111,19 @@
                                         <img src="{{ asset('storage/' . $produk->gambar) }}" alt="{{ $produk->nama_produk }}" style="max-height: 120px;">
                                     </div>
                                 @endif
-                                <input type="file" name="gambar" id="gambar" class="form-control" accept="image/jpeg,image/png,image/webp">
+                                <input type="file" name="gambar" id="gambar" class="form-control @error('gambar') is-invalid @enderror" accept="image/jpeg,image/png,image/webp">
                                 <small class="text-muted">Biarkan kosong bila tidak ingin mengganti gambar.</small>
+                                @error('gambar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-12 mb-3">
                                 <label for="deskripsi" class="form-label">Deskripsi</label>
-                                <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control">{{ old('deskripsi', $produk->deskripsi) }}</textarea>
+                                <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $produk->deskripsi) }}</textarea>
+                                @error('deskripsi')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
 
