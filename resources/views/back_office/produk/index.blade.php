@@ -37,7 +37,12 @@
                                         @endif
                                     </td>
                                     <td>{{ $item->nama_produk }}</td>
-                                    <td>{{ $item->kategori?->nama_kategori ?? '-' }}</td>
+                                    <td>
+                                        {{ $item->kategori?->nama_kategori ?? '-' }}
+                                        @if ($item->kategori)
+                                            <span class="badge bg-info">{{ $item->kategori->produks_count }} produk</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $item->hargaRupiah() }}</td>
                                     <td>{{ $item->stok }}</td>
                                     <td>

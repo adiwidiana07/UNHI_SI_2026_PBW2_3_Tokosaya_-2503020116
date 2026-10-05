@@ -13,11 +13,12 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
-                            <thead> 
+                            <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Kategori</th>
                                     <th>Deskripsi</th>
+                                    <th>Jumlah Produk</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -27,6 +28,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nama_kategori }}</td>
                                         <td>{{ $item->deskripsi }}</td>
+                                        <td><span class="badge bg-info">{{ $item->produks_count }} produk</span></td>
                                         <td>
                                             <a href="{{ route('back-office.kategori.edit', $item->id) }}" class="btn btn-warning">Edit</a>
                                             <form action="{{ route('back-office.kategori.destroy', $item->id) }}" method="POST" style="display: inline-block;">

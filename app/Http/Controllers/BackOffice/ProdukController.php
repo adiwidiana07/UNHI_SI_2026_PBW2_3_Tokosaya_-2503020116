@@ -15,7 +15,9 @@ class ProdukController extends Controller
     /** Daftar produk */
     public function index()
     {
-        $daftarProduk = Produk::with('kategori')->latest()->paginate(10);
+        $daftarProduk = Produk::with(['kategori' => fn ($q) => $q->withCount('produks')])
+            ->latest()
+            ->paginate(10);
 
         return view('back_office.produk.index', compact('daftarProduk'));
     }
