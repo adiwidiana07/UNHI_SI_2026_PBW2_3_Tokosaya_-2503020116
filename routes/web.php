@@ -4,9 +4,12 @@ use App\Http\Controllers\BackOffice\AuthController;
 use App\Http\Controllers\BackOffice\DashboardController;
 use App\Http\Controllers\BackOffice\KategoriController;
 use App\Http\Controllers\BackOffice\ProdukController as ProdukBackOffice;
+use App\Http\Controllers\BahasaController;
 use App\Http\Controllers\HalamanController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/bahasa/{kode}', [BahasaController::class, 'ganti'])->name('bahasa.ganti');
 
 Route::get('/', [HalamanController::class, 'home'])->name('home');
 Route::get('/kontak', [HalamanController::class, 'kontak'])->name('kontak');
