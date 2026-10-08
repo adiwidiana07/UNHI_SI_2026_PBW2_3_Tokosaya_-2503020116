@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => PastikanAdmin::class,
         ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\SetBahasa::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
