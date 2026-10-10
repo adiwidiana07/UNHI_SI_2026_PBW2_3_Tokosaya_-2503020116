@@ -20,18 +20,19 @@
             <!-- Center section: Menu -->
             <nav class="hidden lg:flex md:flex-grow justify-center">
               <ul class="flex justify-center space-x-4 text-white">
-                  <li><a href="{{ url('/') }}" class="hover:text-secondary font-semibold">Home</a></li>
-                  <li><a href="{{ route('produk.index') }}" class="hover:text-secondary font-semibold">Product</a></li>
-                  <li><a href="{{ route('kontak') }}" class="hover:text-secondary font-semibold">Contact</a></li>
+                  <li><a href="{{ url('/') }}" class="hover:text-secondary font-semibold">{{ __('web.beranda') }}</a></li>
+                  <li><a href="{{ route('produk.index') }}" class="hover:text-secondary font-semibold">{{ __('web.produk') }}</a></li>
+                  <li><a href="{{ route('kontak') }}" class="hover:text-secondary font-semibold">{{ __('web.kontak') }}</a></li>
               </ul>
             </nav>
 
             <!-- Right section: Buttons (for desktop) -->
             <div class="hidden lg:flex items-center space-x-4 relative">
+              @include('partials.pengalih-bahasa')
               <a href="{{ url('/register') }}"
-                  class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Register</a>
+                  class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.daftar') }}</a>
               <a href="{{ route('back-office.login') }}"
-                  class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Login</a>
+                  class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.masuk') }}</a>
               <div class="relative group cart-wrapper">
                   <a href="{{ url('/cart') }}" >
                       <img src="{{ asset('assets/tailstore/img/cart-shopping.svg') }}" alt="Cart" class="h-6 w-6 group-hover:scale-120">
@@ -44,8 +45,8 @@
                               <div class="flex items-center">
                                   <img src="{{ asset('assets/tailstore/img/single-product/1.jpg') }}" alt="Product" class="h-12 w-12 object-cover rounded mr-2">
                                   <div>
-                                      <p class="font-semibold">Summer black dress</p>
-                                      <p class="text-sm">Quantity: 1</p>
+                                      <p class="font-semibold">{{ __('web.keranjang_produk1') }}</p>
+                                      <p class="text-sm">{{ __('web.jumlah') }}: 1</p>
                                   </div>
                               </div>
                               <p class="font-semibold">$25.00</p>
@@ -55,14 +56,14 @@
                             <div class="flex items-center">
                                 <img src="{{ asset('assets/tailstore/img/single-product/2.jpg') }}" alt="Product" class="h-12 w-12 object-cover rounded mr-2">
                                 <div>
-                                    <p class="font-semibold">Black suit</p>
-                                    <p class="text-sm">Quantity: 1</p>
+                                    <p class="font-semibold">{{ __('web.keranjang_produk2') }}</p>
+                                    <p class="text-sm">{{ __('web.jumlah') }}: 1</p>
                                 </div>
                             </div>
                             <p class="font-semibold">$125.00</p>
                         </div>
                       </div>
-                      <a href="{{ url('/cart') }}" class="block text-center mt-4 border border-primary bg-primary hover:bg-transparent text-white hover:text-primary py-2 rounded-full font-semibold">Go to Cart</a>
+                      <a href="{{ url('/cart') }}" class="block text-center mt-4 border border-primary bg-primary hover:bg-transparent text-white hover:text-primary py-2 rounded-full font-semibold">{{ __('web.ke_keranjang') }}</a>
                   </div>
               </div>
               <a id="search-icon" href="javascript:void(0);" class="text-white hover:text-secondary group">
@@ -73,31 +74,32 @@
               <div id="search-field"
                   class="hidden absolute top-full right-0 mt-2 w-full bg-white shadow-lg p-2 rounded">
                   <input type="text" class="w-full p-2 border border-gray-300 rounded"
-                      placeholder="Search for products...">
+                      placeholder="{{ __('web.cari_produk') }}">
               </div>
           </div>
         </div>
     </header>
 
     <!-- Mobile menu -->
-    <nav id="mobile-menu-placeholder" class="mobile-menu hidden flex-col items-center space-y-8 lg:hidden">
+    <nav id="mobile-menu-placeholder" class="mobile-menu hidden flex flex-col items-center space-y-8 lg:hidden">
+      @include('partials.pengalih-bahasa', ['latarGelap' => false])
       <ul class="w-full">
-          <li><a href="{{ url('/') }}" class="hover:text-secondary font-bold block py-2">Home</a></li>
-          <li><a href="{{ route('produk.index') }}" class="hover:text-secondary font-bold block py-2">Product</a></li>
-          <li><a href="{{ route('kontak') }}" class="hover:text-secondary font-bold block py-2">Contact</a></li>
+          <li><a href="{{ url('/') }}" class="hover:text-secondary font-bold block py-2">{{ __('web.beranda') }}</a></li>
+          <li><a href="{{ route('produk.index') }}" class="hover:text-secondary font-bold block py-2">{{ __('web.produk') }}</a></li>
+          <li><a href="{{ route('kontak') }}" class="hover:text-secondary font-bold block py-2">{{ __('web.kontak') }}</a></li>
       </ul>
       <div class="flex flex-col mt-6 space-y-2 items-center">
           <a href="{{ url('/register') }}"
-              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Register</a>
+              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.daftar') }}</a>
           <a href="{{ url('/login') }}"
-              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Login</a>
+              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.masuk') }}</a>
           <a href="{{ url('/register') }}"
-              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Cart -&nbsp;<span>5</span>&nbsp;items</a>
+              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.keranjang') }} - {{ __('web.jumlah_keranjang', ['jumlah' => 5]) }}</a>
       </div>
       <!-- Search field -->
       <div
           class="  top-full right-0 mt-2 w-full bg-white shadow-lg p-2 rounded">
           <input type="text" class="w-full p-2 border border-gray-300 rounded"
-              placeholder="Search for products...">
+              placeholder="{{ __('web.cari_produk') }}">
       </div>
     </nav>

@@ -191,6 +191,13 @@ img.cursor-pointer:hover {
     opacity: 0.8;
 }
 
+/* Form newsletter responsif: tidak memaksa lebar tetap seperti w-96
+   (384px) sehingga tidak menjadi lebih lebar dari layar HP. */
+.newsletter-form {
+    width: 100%;
+    max-width: 24rem; /* 384px, sama dengan w-96 bawaan tema */
+}
+
 /* single product tabs */
 .tab {
     padding: 0.5rem 1rem;

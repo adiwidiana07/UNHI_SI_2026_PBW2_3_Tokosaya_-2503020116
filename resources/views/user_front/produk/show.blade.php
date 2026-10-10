@@ -16,7 +16,7 @@
                                 class="w-full object-cover rounded-lg">
                         @else
                             <div class="flex items-center justify-center h-64 text-gray-txt">
-                                Gambar belum tersedia
+                                {{ __('web.gambar_belum') }}
                             </div>
                         @endif
                     </div>
@@ -32,14 +32,15 @@
                         @endif
                     </div>
                     @if ($produk->stok > 0)
-                        <p class="text-sm text-gray-txt mb-4">Stok tersedia: {{ $produk->stok }}</p>
+                        <p class="text-sm text-gray-txt mb-4">{{ __('web.tersedia', ['jumlah' => $produk->stok]) }}</p>
                     @else
-                        <p class="text-sm text-red-600 mb-4">Stok habis</p>
+                        <p class="text-sm text-red-600 mb-4">{{ __('web.habis') }}</p>
                     @endif
                     @if ($produk->deskripsi)
+                        <h2 class="text-xl font-semibold mb-3">{{ __('web.deskripsi_produk') }}</h2>
                         <p class="mb-6">{{ $produk->deskripsi }}</p>
                     @endif
-                    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-6 rounded-full">Add to Cart</button>
+                    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-6 rounded-full">{{ __('web.tambah_keranjang') }}</button>
                 </div>
             </div>
         </div>

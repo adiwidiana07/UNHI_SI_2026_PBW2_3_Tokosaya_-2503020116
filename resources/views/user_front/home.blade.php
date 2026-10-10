@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', __('web.beranda'))
 
 @section('content')
 
@@ -12,33 +12,30 @@
                 <div class="swiper-slide">
                     <img src="{{ asset('assets/img/1.png') }}" alt="Product 1">
                     <div class="swiper-slide-content">
-                      <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">Wibu Store</h2>
-                      <p class="mb-4 text-white md:text-2xl">Selamat datang di toko anime & manga <br>tempatnya koleksi figure terbaik.</p>
+                      <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">{{ __('web.slider1_judul') }}</h2>
+                      <p class="mb-4 text-white md:text-2xl">{!! __('web.slider1_sub') !!}</p>
                         <a href="{{ route('produk.index') }}"
-                            class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">Shop
-                            now</a>
+                            class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.belanja_now') }}</a>
                     </div>
                 </div>
                 <!-- Slide 2 -->
                 <div class="swiper-slide">
                     <img src="{{ asset('assets/img/2.png') }}" alt="Product 2">
                     <div class="swiper-slide-content">
-                      <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">Figure & Gunpla</h2>
-                      <p class="mb-4 text-white md:text-2xl">Koleksi action figure dan gunpla <br>dari series favoritmu.</p>
+                      <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">{{ __('web.slider2_judul') }}</h2>
+                      <p class="mb-4 text-white md:text-2xl">{!! __('web.slider2_sub') !!}</p>
                         <a href="{{ route('produk.index') }}"
-                            class="bg-white hover:bg-transparent text-black hover:text-white font-semibold px-4 py-2 rounded-full inline-block border border-transparent hover:border-white">Shop
-                            now</a>
+                            class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.belanja_now') }}</a>
                     </div>
                 </div>
                 <!-- Slide 3 -->
                 <div class="swiper-slide">
                     <img src="{{ asset('assets/img/3.png') }}" alt="Product 3">
                     <div class="swiper-slide-content">
-                      <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">Manga Lokal & Jepang</h2>
-                      <p class="mb-4 text-white md:text-2xl">Lengkapi set manga impianmu <br>dengan koleksi terlengkap.</p>
+                      <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">{{ __('web.slider3_judul') }}</h2>
+                      <p class="mb-4 text-white md:text-2xl">{!! __('web.slider3_sub') !!}</p>
                         <a href="{{ route('produk.index') }}"
-                            class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">Shop
-                            now</a>
+                            class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.belanja_now') }}</a>
                     </div>
                 </div>
             </div>
@@ -61,8 +58,7 @@
                             class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
                             <h2 class="text-2xl md:text-3xl font-bold mb-4">Figure</h2>
                             <a href="{{ route('produk.index') }}"
-                                class="bg-primary hover:bg-transparent border border-transparent hover:border-white text-white hover:text-white font-semibold px-4 py-2 rounded-full inline-block">Shop
-                                now</a>
+                                class="bg-primary hover:bg-transparent border border-transparent hover:border-white text-white hover:text-white font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.belanja_now') }}</a>
                         </div>
                     </div>
                 </div>
@@ -75,8 +71,7 @@
                             class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300">
                             <h2 class="text-2xl md:text-3xl font-bold mb-4">Manga</h2>
                             <a href="{{ route('produk.index') }}"
-                                class="bg-primary hover:bg-transparent border border-transparent hover:border-white text-white hover:text-white font-semibold px-4 py-2 rounded-full inline-block">Shop
-                                now</a>
+                                class="bg-primary hover:bg-transparent border border-transparent hover:border-white text-white hover:text-white font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.belanja_now') }}</a>
                         </div>
                     </div>
                 </div>
@@ -89,8 +84,7 @@
                             class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300">
                             <h2 class="text-2xl md:text-3xl font-bold mb-4">Gaming</h2>
                             <a href="{{ route('produk.index') }}"
-                                class="bg-primary hover:bg-transparent border border-transparent hover:border-white text-white hover:text-white font-semibold px-4 py-2 rounded-full inline-block">Shop
-                                now</a>
+                                class="bg-primary hover:bg-transparent border border-transparent hover:border-white text-white hover:text-white font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.belanja_now') }}</a>
                         </div>
                     </div>
                 </div>
@@ -101,7 +95,7 @@
     <!-- Popular product section -->
     <section id="popular-products">
         <div class="container mx-auto px-4">
-            <h2 class="text-2xl font-bold mb-8">Popular products</h2>
+            <h2 class="text-2xl font-bold mb-8">{{ __('web.produk_populer') }}</h2>
             <div class="flex flex-wrap -mx-4">
                 @forelse ($produkPopuler as $produk)
                     <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
@@ -128,11 +122,11 @@
                                 @endif
                             </div>
 
-                            <a href="{{ route('produk.show', $produk) }}" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">Add to Cart</a>
+                            <a href="{{ route('produk.show', $produk) }}" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">{{ __('web.tambah_keranjang') }}</a>
                         </div>
                     </div>
                 @empty
-                    <p class="w-full text-center text-gray-txt">Belum ada produk tersedia.</p>
+                    <p class="w-full text-center text-gray-txt">{{ __('web.belum_ada_produk') }}</p>
                 @endforelse
             </div>
         </div>
@@ -143,15 +137,15 @@
       <div class="container mx-auto">
           <div class="flex flex-col items-center rounded-lg p-4 sm:p-0 ">
               <div class="mb-8">
-                  <h2 class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl">Join our newsletter and <span class="text-primary">get $50 discount</span> for your first order
+                  <h2 class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl">{!! __('web.newsletter_judul') !!}
                   </h2>
               </div>
-              <div class="flex flex-col items-center w-96 ">
+              <div class="flex flex-col items-center newsletter-form">
                   <form class="flex w-full gap-2">
-                      <input placeholder="Enter your email address"
+                      <input placeholder="{{ __('web.newsletter_placeholder') }}"
                              class="w-full flex-1 rounded-full px-3 py-2 border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary" />
                       <button
-                          class="bg-primary border border-primary hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">Subscribe</button>
+                          class="bg-primary border border-primary hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">{{ __('web.newsletter_tombol') }}</button>
                   </form>
               </div>
           </div>

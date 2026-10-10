@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Produk')
+@section('title', __('web.produk'))
 
 @section('content')
 
@@ -9,24 +9,21 @@
         <div class="container mx-auto">
             <!-- Top Filter -->
             <div class="flex flex-col md:flex-row justify-between items-center py-4">
-                <div class="flex items-center space-x-4">
+                <div class="flex flex-wrap items-center space-x-4">
                     <button
-                        class="bg-primary text-white hover:bg-transparent hover:text-primary border hover:border-primary py-2 px-4 rounded-full focus:outline-none">Show
-                        On Sale</button>
+                        class="bg-primary text-white hover:bg-transparent hover:text-primary border hover:border-primary py-2 px-4 rounded-full focus:outline-none">{{ __('web.tampil_penjualan') }}</button>
                     <button
-                        class="bg-primary text-white hover:bg-transparent hover:text-primary border hover:border-primary py-2 px-4 rounded-full focus:outline-none">List
-                        View</button>
+                        class="bg-primary text-white hover:bg-transparent hover:text-primary border hover:border-primary py-2 px-4 rounded-full focus:outline-none">{{ __('web.tampil_daftar') }}</button>
                     <button
-                        class="bg-primary text-white hover:bg-transparent hover:text-primary border hover:border-primary py-2 px-4 rounded-full focus:outline-none">Grid
-                        View</button>
+                        class="bg-primary text-white hover:bg-transparent hover:text-primary border hover:border-primary py-2 px-4 rounded-full focus:outline-none">{{ __('web.tampil_grid') }}</button>
                 </div>
                 <div class="flex mt-5 md:mt-0 space-x-4">
                     <div class="relative">
                         <select
                             class="block appearance-none w-full bg-white border hover:border-primary px-4 py-2 pr-8 rounded-full shadow leading-tight focus:outline-none focus:shadow-outline">
-                            <option>Sort by Latest</option>
-                            <option>Sort by Popularity</option>
-                            <option>Sort by A-Z</option>
+                            <option>{{ __('web.urut_terbaru') }}</option>
+                            <option>{{ __('web.urut_populer') }}</option>
+                            <option>{{ __('web.urut_abc') }}</option>
                         </select>
                         <div
                             class="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center px-2">
@@ -41,14 +38,15 @@
             <!-- Filter Toggle Button for Mobile -->
             <div class="block md:hidden text-center mb-4">
                 <button id="products-toggle-filters"
-                    class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none">Show Filters</button>
+                    class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none">{{ __('web.tampil_filter') }}</button>
             </div>
+            <p class="text-sm text-gray-txt mb-4">{{ __('web.menampilkan', ['jumlah' => $daftarProduk->total()]) }}</p>
             <div class="flex flex-col md:flex-row">
                 <!-- Filters -->
                 <div id="filters" class="w-full md:w-1/4 p-4 hidden md:block">
                     <!-- Category Filter -->
                     <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Category</h3>
+                        <h3 class="text-lg font-semibold mb-6">{{ __('web.kategori') }}</h3>
                         <div class="space-y-2">
                             @forelse ($daftarKategori as $kategori)
                                 <label class="flex items-center">
@@ -56,13 +54,13 @@
                                     <span class="ml-2">{{ $kategori->nama_kategori }}</span>
                                 </label>
                             @empty
-                                <span class="text-sm text-gray-txt">Belum ada kategori.</span>
+                                <span class="text-sm text-gray-txt">{{ __('web.belum_ada_kategori') }}</span>
                             @endforelse
                         </div>
                     </div>
                     <!-- Brand Filter -->
                     <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Brand</h3>
+                        <h3 class="text-lg font-semibold mb-6">{{ __('web.merek') }}</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
                                 <input type="checkbox" class="form-checkbox custom-checkbox">
@@ -84,7 +82,7 @@
                     </div>
                     <!-- Rating Filter -->
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold mb-6">Rating</h3>
+                        <h3 class="text-lg font-semibold mb-6">{{ __('web.rating') }}</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
                                 <input type="checkbox" class="form-checkbox custom-checkbox">
@@ -123,11 +121,10 @@
                                     @endif
                                 </div>
                                 <a href="{{ route('produk.show', $produk) }}"
-                                    class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">Add
-                                    to Cart</a>
+                                    class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full block text-center">{{ __('web.tambah_keranjang') }}</a>
                             </div>
                         @empty
-                            <p class="col-span-full text-center text-gray-txt">Belum ada produk tersedia.</p>
+                            <p class="col-span-full text-center text-gray-txt">{{ __('web.belum_ada_produk') }}</p>
                         @endforelse
                     </div>
                     <!-- Pagination -->
@@ -143,17 +140,9 @@
     <section id="shop-category-description" class="py-8">
         <div class="container mx-auto">
             <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold mb-4">Figure &amp; Manga Category</h2>
-                <p class="mb-4">
-                    Discover our wide range of figures and manga, perfect for every otaku and collector. Whether you're
-                    looking for a detailed action figure or a complete manga volume set, we have the perfect item for
-                    you. Our collection includes a variety of series, styles, and scales to suit everyone's taste.
-                </p>
-                <p>
-                    Browse through our selection and find your new favorite collectible today. All our products are
-                    sourced from trusted brands and are designed to satisfy both collectors and fans. Shop now and
-                    elevate your collection with our premium figures and manga.
-                </p>
+                <h2 class="text-2xl font-bold mb-4">{!! __('web.kategori_deskripsi_judul') !!}</h2>
+                <p class="mb-4">{{ __('web.kategori_deskripsi1') }}</p>
+                <p>{{ __('web.kategori_deskripsi2') }}</p>
             </div>
         </div>
     </section>
