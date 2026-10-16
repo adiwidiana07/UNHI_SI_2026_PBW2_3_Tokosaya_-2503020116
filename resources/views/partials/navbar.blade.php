@@ -34,36 +34,39 @@
               <a href="{{ route('back-office.login') }}"
                   class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.masuk') }}</a>
               <div class="relative group cart-wrapper">
-                  <a href="{{ url('/cart') }}" >
+                  <a href="{{ route('keranjang.index') }}" class="flex items-center">
+                      @if ($jumlahKeranjang > 0)
+                          <span class="bg-primary text-white text-xs font-bold rounded-full px-2 py-1 ml-1">
+                              {{ $jumlahKeranjang }}
+                          </span>
+                      @endif
                       <img src="{{ asset('assets/tailstore/img/cart-shopping.svg') }}" alt="Cart" class="h-6 w-6 group-hover:scale-120">
                   </a>
                   <!-- Cart dropdown -->
                   <div class="absolute right-0 mt-1 w-80 bg-white shadow-lg p-4 rounded hidden group-hover:block">
-                      <div class="space-y-4">
-                          <!-- product item -->
-                          <div class="flex items-center justify-between pb-4 border-b border-gray-line">
-                              <div class="flex items-center">
-                                  <img src="{{ asset('assets/tailstore/img/single-product/1.jpg') }}" alt="Product" class="h-12 w-12 object-cover rounded mr-2">
-                                  <div>
-                                      <p class="font-semibold">{{ __('web.keranjang_produk1') }}</p>
-                                      <p class="text-sm">{{ __('web.jumlah') }}: 1</p>
+                      @if ($keranjangItem->isEmpty())
+                          <p class="text-sm text-gray-txt text-center mb-0">{{ __('web.keranjang_kosong') }}</p>
+                      @else
+                          <div class="space-y-4">
+                              @foreach ($keranjangItem as $item)
+                                  <div class="flex items-center justify-between {{ $loop->last ? '' : 'pb-4 border-b border-gray-line' }}">
+                                      <div class="flex items-center">
+                                          @if ($item->produk->gambar)
+                                              <img src="{{ asset('storage/' . $item->produk->gambar) }}" alt="{{ $item->produk->nama_produk }}" class="h-12 w-12 object-cover rounded mr-2">
+                                          @else
+                                              <img src="{{ asset('assets/tailstore/img/template-logo.png') }}" alt="{{ $item->produk->nama_produk }}" class="h-12 w-12 object-cover rounded mr-2">
+                                          @endif
+                                          <div>
+                                              <p class="font-semibold">{{ $item->produk->nama_produk }}</p>
+                                              <p class="text-sm">{{ __('web.jumlah') }}: {{ $item->jumlah }}</p>
+                                          </div>
+                                      </div>
+                                      <p class="font-semibold">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
                                   </div>
-                              </div>
-                              <p class="font-semibold">$25.00</p>
+                              @endforeach
                           </div>
-                          <!-- product item -->
-                          <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <img src="{{ asset('assets/tailstore/img/single-product/2.jpg') }}" alt="Product" class="h-12 w-12 object-cover rounded mr-2">
-                                <div>
-                                    <p class="font-semibold">{{ __('web.keranjang_produk2') }}</p>
-                                    <p class="text-sm">{{ __('web.jumlah') }}: 1</p>
-                                </div>
-                            </div>
-                            <p class="font-semibold">$125.00</p>
-                        </div>
-                      </div>
-                      <a href="{{ url('/cart') }}" class="block text-center mt-4 border border-primary bg-primary hover:bg-transparent text-white hover:text-primary py-2 rounded-full font-semibold">{{ __('web.ke_keranjang') }}</a>
+                      @endif
+                      <a href="{{ route('keranjang.index') }}" class="block text-center mt-4 border border-primary bg-primary hover:bg-transparent text-white hover:text-primary py-2 rounded-full font-semibold">{{ __('web.ke_keranjang') }}</a>
                   </div>
               </div>
               <a id="search-icon" href="javascript:void(0);" class="text-white hover:text-secondary group">
@@ -93,8 +96,8 @@
               class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.daftar') }}</a>
           <a href="{{ url('/login') }}"
               class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.masuk') }}</a>
-          <a href="{{ url('/register') }}"
-              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.keranjang') }} - {{ __('web.jumlah_keranjang', ['jumlah' => 5]) }}</a>
+          <a href="{{ route('keranjang.index') }}"
+              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.keranjang') }} - {{ __('web.jumlah_keranjang', ['jumlah' => $jumlahKeranjang]) }}</a>
       </div>
       <!-- Search field -->
       <div
