@@ -106,4 +106,23 @@ return [
     'kategori_deskripsi1' => 'Discover our wide range of figures and manga, perfect for every otaku and collector. Whether you\'re looking for a detailed action figure or a complete manga volume set, we have the perfect item for you. Our collection includes a variety of series, styles, and scales to suit everyone\'s taste.',
     'kategori_deskripsi2' => 'Browse through our selection and find your new favorite collectible today. All our products are sourced from trusted brands and are designed to satisfy both collectors and fans. Shop now and elevate your collection with our premium figures and manga.',
 
+    // ---------- Shopping cart ----------
+    'keranjang_belanja'  => 'Shopping Cart',
+    'masuk_keranjang'    => 'Add to Cart',
+    'stok_habis'         => 'Out of Stock',
+    'subtotal'           => 'Subtotal',
+    'total'              => 'Total',
+    'total_item'         => 'Total Items',
+    'hapus'              => 'Remove',
+    'perbarui'           => 'Update',
+    'lanjut_belanja'     => 'Continue Shopping',
+    'lanjut_checkout'    => 'Proceed to Checkout',
+    'kosongkan'          => 'Empty Cart',
+    'ringkasan'          => 'Order Summary',
+    'keranjang_kosong'   => 'Your cart is still empty.',
+    'silakan_pilih'      => 'Please choose a product first.',
+    'mulai_belanja'      => 'Start Shopping',
+    'produk_di_keranjang' => ':jumlah products in your cart',
+    'ongkir_nanti'       => 'Shipping cost will be calculated on the next page.',
+
 ];

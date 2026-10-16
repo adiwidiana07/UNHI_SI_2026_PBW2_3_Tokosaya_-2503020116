@@ -6,6 +6,7 @@ use App\Http\Controllers\BackOffice\KategoriController;
 use App\Http\Controllers\BackOffice\ProdukController as ProdukBackOffice;
 use App\Http\Controllers\BahasaController;
 use App\Http\Controllers\HalamanController;
+use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,14 @@ Route::prefix('back-office')->name('back-office.')->group(function () {
         Route::resource('kategori', KategoriController::class)->except(['show']);
         Route::resource('produk', ProdukBackOffice::class)->except(['show']);
     });
+});
+
+Route::controller(KeranjangController::class)->prefix('keranjang')->name('keranjang.')->group(function () {
+
+    Route::get('/',                    'index')->name('index');
+    Route::post('/tambah/{produk}',    'tambah')->name('tambah');
+    Route::patch('/{produk}',          'ubah')->name('ubah');
+    Route::delete('/{produk}',         'hapus')->name('hapus');
+    Route::delete('/',                 'kosongkan')->name('kosongkan');
+
 });
