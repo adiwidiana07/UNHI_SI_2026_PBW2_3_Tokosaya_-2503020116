@@ -27,7 +27,7 @@
             <div class="w-full sm:w-1/6 px-4 mb-8">
               <h3 class="text-lg font-semibold mb-4">{{ __('web.akun') }}</h3>
               <ul>
-                <li><a href="{{ url('/cart') }}" class="hover:text-primary">{{ __('web.keranjang') }}</a></li>
+                <li><a href="{{ route('keranjang.index') }}" class="hover:text-primary">{{ __('web.keranjang') }}</a></li>
                 <li><a href="{{ url('/register') }}" class="hover:text-primary">{{ __('web.daftar') }}</a></li>
                 <li><a href="{{ url('/login') }}" class="hover:text-primary">{{ __('web.masuk') }}</a></li>
               </ul>
