@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Produk;
 use App\Models\User;
-
+use App\Models\Pesanan;
 class DashboardController extends Controller
 {
     public function index()
@@ -14,6 +14,7 @@ class DashboardController extends Controller
         $ringkasan = [
             'produk'       => Produk::count(),
             'kategori'     => Kategori::count(),
+            'pesanan_baru' => Pesanan::where('status', 'baru')->count(),
             'produk_aktif' => Produk::where('status', 'aktif')->count(),
             'admin_aktif'  => User::where('role', 'admin')->count(),
         ];
