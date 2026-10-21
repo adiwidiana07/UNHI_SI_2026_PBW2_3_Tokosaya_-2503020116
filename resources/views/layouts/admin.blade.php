@@ -444,7 +444,15 @@
                   <i class="nav-icon bi bi-tags"></i>
                   <p>Kategori</p>
                 </a>
+
               </li>
+              <li class="nav-item">
+    <a href="{{ route('back-office.pesanan.index') }}"
+       class="nav-link {{ request()->routeIs('back-office.pesanan.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-receipt"></i>
+        <p>Pesanan</p>
+    </a>
+</li>
               <li class="nav-header">AKUN</li>
               <li class="nav-item">
                 <form method="POST" action="{{ route('back-office.logout') }}" onsubmit="return confirm('Yakin ingin keluar dari back office?');">
