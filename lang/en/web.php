@@ -125,4 +125,29 @@ return [
     'produk_di_keranjang' => ':jumlah products in your cart',
     'ongkir_nanti'       => 'Shipping cost will be calculated on the next page.',
 
+    // ---------- Checkout ----------
+    'checkout_sub'      => 'Complete the delivery details to finish your order.',
+    'data_pengiriman'   => 'Delivery Details',
+    'nama_penerima'     => 'Recipient Name',
+    'nomor_telepon'     => 'Phone Number / WhatsApp',
+    'alamat_lengkap'    => 'Full Address',
+    'kota'              => 'City / Regency',
+    'kode_pos'          => 'Postal Code',
+    'catatan_penjual'   => 'Note for the Seller (optional)',
+    'ringkasan_pesanan' => 'Order Summary',
+    'ongkos_kirim'      => 'Shipping Cost',
+    'dihitung_nanti'    => 'Calculated later',
+    'buat_pesanan'      => 'Place Order',
+    'periksa_isian'     => 'Please check your input:',
+
+    // ---------- Thank you page ----------
+    'terima_kasih'      => 'Thank You for Shopping!',
+    'pesanan_diterima'  => 'Your order has been received and is being processed.',
+    'nomor_pesanan'     => 'Order Number',
+    'rincian_pesanan'   => 'Order Details',
+    'langkah_lanjut'    => 'Next Steps',
+    'simpan_nomor'      => 'Save your order number.',
+    'akan_dihubungi'    => 'Our team will contact you via WhatsApp to confirm payment and delivery.',
+    'jumlah_barang'     => 'Total Items',
+
 ];

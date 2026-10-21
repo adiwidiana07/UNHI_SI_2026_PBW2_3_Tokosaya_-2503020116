@@ -125,7 +125,6 @@ return [
     'produk_di_keranjang' => ':jumlah produk di keranjang',
     'ongkir_nanti'       => 'Ongkos kirim dihitung di halaman berikutnya.',
     // ---------- Checkout ----------
-    'checkout'          => 'Checkout',
     'checkout_sub'      => 'Lengkapi data pengiriman untuk menyelesaikan pesanan.',
     'data_pengiriman'   => 'Data Pengiriman',
     'nama_penerima'     => 'Nama Penerima',
