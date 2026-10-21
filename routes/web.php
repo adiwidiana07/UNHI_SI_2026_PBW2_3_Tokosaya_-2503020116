@@ -3,6 +3,7 @@
 use App\Http\Controllers\BackOffice\AuthController;
 use App\Http\Controllers\BackOffice\DashboardController;
 use App\Http\Controllers\BackOffice\KategoriController;
+use App\Http\Controllers\BackOffice\PesananController as PesananBackOffice;
 use App\Http\Controllers\BackOffice\ProdukController as ProdukBackOffice;
 use App\Http\Controllers\BahasaController;
 use App\Http\Controllers\HalamanController;
@@ -34,6 +35,10 @@ Route::prefix('back-office')->name('back-office.')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::resource('kategori', KategoriController::class)->except(['show']);
         Route::resource('produk', ProdukBackOffice::class)->except(['show']);
+
+        Route::resource('pesanan', PesananBackOffice::class)->only(['index', 'show']);
+        Route::patch('pesanan/{pesanan}/status', [PesananBackOffice::class, 'ubahStatus'])
+            ->name('pesanan.status');
     });
 });
 
@@ -51,3 +56,4 @@ Route::controller(CheckoutController::class)->prefix('checkout')->name('checkout
     Route::post('/',       'proses')->name('proses');
     Route::get('/selesai/{pesanan:kode_pesanan}', 'selesai')->name('selesai');
 });
+
