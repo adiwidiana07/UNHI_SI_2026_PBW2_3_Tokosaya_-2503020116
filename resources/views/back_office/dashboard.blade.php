@@ -58,5 +58,14 @@
                 <i class="small-box-icon bi bi-person-fill-gear"></i>
             </div>
         </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box text-bg-info">
+                <div class="inner">
+                    <h3>{{ $ringkasan['pesanan_baru'] }}</h3>
+                    <p>Pesanan Baru</p>
+                </div>
+                <i class="small-box-icon bi bi-bag-fill"></i>
+            </div>
+        </div>
     </div>
 @endsection
