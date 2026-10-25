@@ -74,7 +74,6 @@
                         <h2 class="text-xl font-semibold mb-3">{{ __('web.deskripsi_produk') }}</h2>
                         <p class="mb-6">{{ $produk->deskripsi }}</p>
                     @endif
-                    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-6 rounded-full">{{ __('web.tambah_keranjang') }}</button>
                 </div>
             </div>
         </div>
