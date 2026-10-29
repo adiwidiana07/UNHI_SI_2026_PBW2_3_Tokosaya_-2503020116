@@ -125,7 +125,7 @@ class ProdukController extends Controller
             'stok'         => ['required', 'integer', 'min:0'],
             'berat'        => ['required', 'integer', 'min:0'],
             'status'       => ['required', 'in:aktif,nonaktif'],
-            'gambar'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'gambar'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3048'],
         ], [
             'kategori_id.required' => 'Kategori wajib dipilih.',
             'nama_produk.required' => 'Nama produk wajib diisi.',
@@ -137,7 +137,7 @@ class ProdukController extends Controller
             'harga.numeric'        => 'Harga harus berupa angka.',
             'harga_coret.gt'       => 'Harga coret harus lebih besar dari harga jual.',
             'gambar.image'         => 'Berkas yang diunggah harus berupa gambar.',
-            'gambar.max'           => 'Ukuran gambar maksimal 2 MB.',
+            'gambar.max'           => 'Ukuran gambar maksimal 3 MB.',
         ]);
     }
 }
