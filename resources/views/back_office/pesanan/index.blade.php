@@ -59,7 +59,7 @@
             </table>
         </div>
 
-        <div class="card-footer">{{ $daftarPesanan->links() }}</div>
+        <div class="card-footer">{{ $daftarPesanan->links('pagination::bootstrap-5') }}</div>
     </div>
 
 @endsection
