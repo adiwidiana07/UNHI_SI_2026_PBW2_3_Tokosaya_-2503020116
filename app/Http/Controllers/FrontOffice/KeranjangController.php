@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FrontOffice;
 
+use App\Http\Controllers\Controller;
 use App\Models\Produk;
 use App\Services\Keranjang;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class KeranjangController extends Controller
     {
         $daftarItem = Keranjang::daftarItem();
         $totalHarga = Keranjang::totalHarga();
-        $totalItem  = Keranjang::totalItem();
+        $totalItem = Keranjang::totalItem();
 
         return view('user_front.keranjang.index', compact('daftarItem', 'totalHarga', 'totalItem'));
     }
@@ -30,19 +31,19 @@ class KeranjangController extends Controller
 
         // Hitung jumlah yang sudah ada di keranjang
         $sudahAda = Keranjang::isi()[$produk->id] ?? 0;
-        $total    = $sudahAda + $data['jumlah'];
+        $total = $sudahAda + $data['jumlah'];
 
         if ($total > $produk->stok) {
             return back()->with('gagal',
-                'Stok tidak mencukupi. Tersedia ' . $produk->stok . ' buah, '
-                . 'sedangkan di keranjang Anda sudah ada ' . $sudahAda . ' buah.');
+                'Stok tidak mencukupi. Tersedia '.$produk->stok.' buah, '
+                .'sedangkan di keranjang Anda sudah ada '.$sudahAda.' buah.');
         }
 
         Keranjang::tambah($produk->id, $data['jumlah']);
 
         return redirect()
             ->route('keranjang.index')
-            ->with('sukses', $produk->nama_produk . ' berhasil ditambahkan ke keranjang.');
+            ->with('sukses', $produk->nama_produk.' berhasil ditambahkan ke keranjang.');
     }
 
     /** Mengubah jumlah sebuah item */
@@ -54,7 +55,7 @@ class KeranjangController extends Controller
 
         if ($data['jumlah'] > $produk->stok) {
             return back()->with('gagal',
-                'Jumlah melebihi stok. Tersedia ' . $produk->stok . ' buah.');
+                'Jumlah melebihi stok. Tersedia '.$produk->stok.' buah.');
         }
 
         Keranjang::ubah($produk->id, $data['jumlah']);
@@ -67,7 +68,7 @@ class KeranjangController extends Controller
     {
         Keranjang::hapus($produk->id);
 
-        return back()->with('sukses', $produk->nama_produk . ' dihapus dari keranjang.');
+        return back()->with('sukses', $produk->nama_produk.' dihapus dari keranjang.');
     }
 
     /** Mengosongkan seluruh keranjang */

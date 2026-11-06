@@ -5,13 +5,12 @@ use App\Http\Controllers\BackOffice\DashboardController;
 use App\Http\Controllers\BackOffice\KategoriController;
 use App\Http\Controllers\BackOffice\PesananController as PesananBackOffice;
 use App\Http\Controllers\BackOffice\ProdukController as ProdukBackOffice;
-use App\Http\Controllers\BahasaController;
-use App\Http\Controllers\HalamanController;
-use App\Http\Controllers\KeranjangController;
-use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\FrontOffice\BahasaController;
+use App\Http\Controllers\FrontOffice\CheckoutController;
+use App\Http\Controllers\FrontOffice\HalamanController;
+use App\Http\Controllers\FrontOffice\KeranjangController;
+use App\Http\Controllers\FrontOffice\ProdukController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CheckoutController;
-
 
 Route::get('/bahasa/{kode}', [BahasaController::class, 'ganti'])->name('bahasa.ganti');
 
@@ -44,16 +43,15 @@ Route::prefix('back-office')->name('back-office.')->group(function () {
 
 Route::controller(KeranjangController::class)->prefix('keranjang')->name('keranjang.')->group(function () {
 
-    Route::get('/',                    'index')->name('index');
-    Route::post('/tambah/{produk}',    'tambah')->name('tambah');
-    Route::patch('/{produk}',          'ubah')->name('ubah');
-    Route::delete('/{produk}',         'hapus')->name('hapus');
-    Route::delete('/',                 'kosongkan')->name('kosongkan');
+    Route::get('/', 'index')->name('index');
+    Route::post('/tambah/{produk}', 'tambah')->name('tambah');
+    Route::patch('/{produk}', 'ubah')->name('ubah');
+    Route::delete('/{produk}', 'hapus')->name('hapus');
+    Route::delete('/', 'kosongkan')->name('kosongkan');
 
 });
 Route::controller(CheckoutController::class)->prefix('checkout')->name('checkout.')->group(function () {
-    Route::get('/',        'index')->name('index');
-    Route::post('/',       'proses')->name('proses');
+    Route::get('/', 'index')->name('index');
+    Route::post('/', 'proses')->name('proses');
     Route::get('/selesai/{pesanan:kode_pesanan}', 'selesai')->name('selesai');
 });
-

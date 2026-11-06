@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FrontOffice;
 
-use App\Services\Keranjang;
+use App\Http\Controllers\Controller;
 use App\Models\Pesanan;
 use App\Models\Produk;
+use App\Services\Keranjang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,35 +28,36 @@ class CheckoutController extends Controller
 
         return view('user_front.checkout.index', compact('daftarItem', 'totalHarga'));
     }
+
     public function proses(Request $request)
     {
         $daftarItem = Keranjang::daftarItem();
 
         if ($daftarItem->isEmpty()) {
             return redirect()->route('keranjang.index')
-                             ->with('gagal', 'Keranjang Anda masih kosong.');
+                ->with('gagal', 'Keranjang Anda masih kosong.');
         }
 
         // ---------- 1. Validasi isian ----------
         $data = $request->validate([
             'nama_pemesan' => ['required', 'string', 'min:3', 'max:100'],
-            'email'        => ['required', 'email', 'max:100'],
-            'telepon'      => ['required', 'string', 'min:9', 'max:20', 'regex:/^[0-9+\-\s]+$/'],
-            'alamat'       => ['required', 'string', 'min:10', 'max:500'],
-            'kota'         => ['required', 'string', 'max:100'],
-            'kode_pos'     => ['nullable', 'string', 'max:10'],
-            'catatan'      => ['nullable', 'string', 'max:500'],
+            'email' => ['required', 'email', 'max:100'],
+            'telepon' => ['required', 'string', 'min:9', 'max:20', 'regex:/^[0-9+\-\s]+$/'],
+            'alamat' => ['required', 'string', 'min:10', 'max:500'],
+            'kota' => ['required', 'string', 'max:100'],
+            'kode_pos' => ['nullable', 'string', 'max:10'],
+            'catatan' => ['nullable', 'string', 'max:500'],
         ], [
             'nama_pemesan.required' => 'Nama penerima wajib diisi.',
-            'nama_pemesan.min'      => 'Nama penerima minimal 3 karakter.',
-            'email.required'        => 'Email wajib diisi.',
-            'email.email'           => 'Format email tidak benar.',
-            'telepon.required'      => 'Nomor telepon wajib diisi.',
-            'telepon.regex'         => 'Nomor telepon hanya boleh berisi angka.',
-            'telepon.min'           => 'Nomor telepon minimal 9 digit.',
-            'alamat.required'       => 'Alamat lengkap wajib diisi.',
-            'alamat.min'            => 'Alamat lengkap minimal 10 karakter.',
-            'kota.required'         => 'Kota wajib diisi.',
+            'nama_pemesan.min' => 'Nama penerima minimal 3 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak benar.',
+            'telepon.required' => 'Nomor telepon wajib diisi.',
+            'telepon.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'telepon.min' => 'Nomor telepon minimal 9 digit.',
+            'alamat.required' => 'Alamat lengkap wajib diisi.',
+            'alamat.min' => 'Alamat lengkap minimal 10 karakter.',
+            'kota.required' => 'Kota wajib diisi.',
         ]);
 
         // ---------- 2. Simpan sebagai satu kesatuan ----------
@@ -64,7 +66,7 @@ class CheckoutController extends Controller
             $pesanan = DB::transaction(function () use ($data, $daftarItem) {
 
                 $subtotal = 0;
-                $baris    = [];
+                $baris = [];
 
                 foreach ($daftarItem as $item) {
 
@@ -73,13 +75,13 @@ class CheckoutController extends Controller
 
                     if (! $produk || $produk->status !== 'aktif') {
                         throw new RuntimeException(
-                            'Produk ' . $item->produk->nama_produk . ' sudah tidak tersedia.'
+                            'Produk '.$item->produk->nama_produk.' sudah tidak tersedia.'
                         );
                     }
 
                     if ($produk->stok < $item->jumlah) {
                         throw new RuntimeException(
-                            'Stok ' . $produk->nama_produk . ' tinggal ' . $produk->stok . ' buah.'
+                            'Stok '.$produk->nama_produk.' tinggal '.$produk->stok.' buah.'
                         );
                     }
 
@@ -88,11 +90,11 @@ class CheckoutController extends Controller
 
                     // Salin nama dan harga — inilah catatan sejarahnya
                     $baris[] = [
-                        'produk_id'   => $produk->id,
+                        'produk_id' => $produk->id,
                         'nama_produk' => $produk->nama_produk,
-                        'harga'       => $produk->harga,
-                        'jumlah'      => $item->jumlah,
-                        'subtotal'    => $subtotalBaris,
+                        'harga' => $produk->harga,
+                        'jumlah' => $item->jumlah,
+                        'subtotal' => $subtotalBaris,
                     ];
 
                     // Kurangi stok
@@ -101,10 +103,10 @@ class CheckoutController extends Controller
 
                 $pesanan = Pesanan::create(array_merge($data, [
                     'kode_pesanan' => $this->buatKode(),
-                    'subtotal'     => $subtotal,
-                    'ongkir'       => 0,      // dihitung di Pertemuan 10
-                    'total'        => $subtotal,
-                    'status'       => 'baru',
+                    'subtotal' => $subtotal,
+                    'ongkir' => 0,      // dihitung di Pertemuan 10
+                    'total' => $subtotal,
+                    'status' => 'baru',
                 ]));
 
                 $pesanan->detail()->createMany($baris);
@@ -130,11 +132,13 @@ class CheckoutController extends Controller
     private function buatKode(): string
     {
         do {
-            $kode = 'INV-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
+            $kode = 'INV-'.now()->format('Ymd').'-'.strtoupper(Str::random(4));
         } while (Pesanan::where('kode_pesanan', $kode)->exists());
 
         return $kode;
-    }  public function selesai(Pesanan $pesanan)
+    }
+
+    public function selesai(Pesanan $pesanan)
     {
         // Hanya pemesan yang baru saja checkout yang boleh melihat
         abort_unless(
@@ -147,5 +151,4 @@ class CheckoutController extends Controller
 
         return view('user_front.checkout.selesai', compact('pesanan'));
     }
-
 }

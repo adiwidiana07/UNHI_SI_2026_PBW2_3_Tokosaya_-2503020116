@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FrontOffice;
 
+use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Produk;
 
@@ -10,9 +11,9 @@ class ProdukController extends Controller
     public function index()
     {
         $daftarProduk = Produk::with('kategori')
-                              ->where('status', 'aktif')
-                              ->latest()
-                              ->paginate(12);
+            ->where('status', 'aktif')
+            ->latest()
+            ->paginate(12);
 
         $daftarKategori = Kategori::orderBy('nama_kategori')->get();
 
