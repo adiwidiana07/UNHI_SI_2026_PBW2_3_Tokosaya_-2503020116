@@ -7,7 +7,6 @@ return [
     'produk'         => 'Produk',
     'kategori'       => 'Kategori',
     'kontak'         => 'Kontak Kami',
-    'daftar'         => 'Daftar',
     'masuk'          => 'Masuk',
     'keranjang'      => 'Keranjang',
     'cari_produk'    => 'Cari produk...',
@@ -52,11 +51,6 @@ return [
     'slider1_sub'    => 'Selamat datang di toko anime & manga<br>tempatnya koleksi figure terbaik.',
     'slider2_sub'    => 'Koleksi action figure dan gunpla<br>dari series favoritmu.',
     'slider3_sub'    => 'Lengkapi set manga impianmu<br>dengan koleksi terlengkap.',
-
-    // ---------- Newsletter ----------
-    'newsletter_judul' => 'Gabung newsletter kami dan <span class="text-primary">dapatkan potongan $50</span> untuk pesanan pertama Anda',
-    'newsletter_placeholder' => 'Masukkan alamat email Anda',
-    'newsletter_tombol' => 'Berlangganan',
 
     // ---------- Filter & urutan daftar produk ----------
     'tampil_penjualan' => 'Lihat Promo',

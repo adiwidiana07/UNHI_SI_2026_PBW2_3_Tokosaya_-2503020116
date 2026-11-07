@@ -132,24 +132,4 @@
         </div>
     </section>
 
-    <!-- Subscribe section -->
-    <section id="subscribe" class="py-6 lg:py-24 bg-white border-t border-gray-line">
-      <div class="container mx-auto">
-          <div class="flex flex-col items-center rounded-lg p-4 sm:p-0 ">
-              <div class="mb-8">
-                  <h2 class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl">{!! __('web.newsletter_judul') !!}
-                  </h2>
-              </div>
-              <div class="flex flex-col items-center newsletter-form">
-                  <form class="flex w-full gap-2">
-                      <input placeholder="{{ __('web.newsletter_placeholder') }}"
-                             class="w-full flex-1 rounded-full px-3 py-2 border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary" />
-                      <button
-                          class="bg-primary border border-primary hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">{{ __('web.newsletter_tombol') }}</button>
-                  </form>
-              </div>
-          </div>
-      </div>
-    </section>
-
 @endsection

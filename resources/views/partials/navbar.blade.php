@@ -29,8 +29,6 @@
             <!-- Right section: Buttons (for desktop) -->
             <div class="hidden lg:flex items-center space-x-4 relative">
               @include('partials.pengalih-bahasa')
-              <a href="{{ url('/register') }}"
-                  class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.daftar') }}</a>
               <a href="{{ route('back-office.login') }}"
                   class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">{{ __('web.masuk') }}</a>
               <div class="relative group cart-wrapper">
@@ -92,8 +90,6 @@
           <li><a href="{{ route('kontak') }}" class="hover:text-secondary font-bold block py-2">{{ __('web.kontak') }}</a></li>
       </ul>
       <div class="flex flex-col mt-6 space-y-2 items-center">
-          <a href="{{ url('/register') }}"
-              class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.daftar') }}</a>
           <a href="{{ url('/login') }}"
               class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">{{ __('web.masuk') }}</a>
           <a href="{{ route('keranjang.index') }}"
