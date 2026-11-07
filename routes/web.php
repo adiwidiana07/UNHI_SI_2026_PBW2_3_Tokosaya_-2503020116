@@ -55,3 +55,12 @@ Route::controller(CheckoutController::class)->prefix('checkout')->name('checkout
     Route::post('/', 'proses')->name('proses');
     Route::get('/selesai/{pesanan:kode_pesanan}', 'selesai')->name('selesai');
 });
+Route::get(
+    '/belum-bayar/{pesanan:kode_pesanan}',
+    'belumBayar'
+)->name('belum_bayar');
+
+Route::post(
+    '/bayar/{pesanan:kode_pesanan}',
+    'bayar'
+)->name('bayar');
