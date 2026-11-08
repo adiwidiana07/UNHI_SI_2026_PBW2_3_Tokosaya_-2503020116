@@ -144,4 +144,31 @@ return [
     'akan_dihubungi'    => 'Our team will contact you via WhatsApp to confirm payment and delivery.',
     'jumlah_barang'     => 'Total Items',
 
+
+// ---------- Payment (Pertemuan 9) ----------
+'pembayaran' => 'Payment',
+'status_pembayaran' => 'Payment Status',
+'metode_pembayaran' => 'Payment Method',
+'waktu_pembayaran' => 'Paid At',
+
+'belum_dibayar' => 'Unpaid',
+'menunggu' => 'Pending',
+'lunas' => 'Paid',
+'gagal' => 'Failed',
+'kedaluwarsa' => 'Expired',
+
+'menunggu_pembayaran' => 'Awaiting Payment',
+'bayar_sekarang' => 'Pay Now',
+'coba_bayar_lagi' => 'Try Paying Again',
+'buka_halaman_bayar' => 'Reopen Payment Page',
+'muat_ulang_status' => 'Refresh Status',
+
+'pesanan_belum_dibayar' => 'Your order has been saved, but its payment is not complete yet.',
+'simpan_nomor_bayar' => 'Keep your order number, then continue the payment with the button below.',
+'pembayaran_diproses' => 'We are waiting for Midtrans to confirm your payment. Have not paid yet? Reopen the payment page with the button below.',
+'pembayaran_diterima' => 'We have received your payment. Thank you!',
+'pesanan_batal_bayar' => 'The payment for this order failed or expired, so the order has been cancelled. Please place a new order.',
+'pesanan_tidak_bisa_dibayar' => 'This order can no longer be paid. Please place a new order.',
+'gagal_membuka_pembayaran' => 'The payment page cannot be opened right now. Please try again in a moment.',
+'batas_waktu_bayar' => 'Payment must be completed within 24 hours of placing the order.',
 ];

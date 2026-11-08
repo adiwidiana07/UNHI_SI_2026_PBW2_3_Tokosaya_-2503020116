@@ -142,4 +142,34 @@ return [
     'simpan_nomor'      => 'Simpan nomor pesanan Anda.',
     'akan_dihubungi'    => 'Tim kami akan menghubungi Anda melalui WhatsApp untuk konfirmasi pembayaran dan pengiriman.',
     'jumlah_barang'     => 'Jumlah Barang',
+
+
+// ---------- Pembayaran (Pertemuan 9) ----------
+'pembayaran' => 'Pembayaran',
+'status_pembayaran' => 'Status Pembayaran',
+'metode_pembayaran' => 'Metode Pembayaran',
+'waktu_pembayaran' => 'Waktu Pembayaran',
+
+// Label status pembayaran
+'belum_dibayar' => 'Belum Dibayar',
+'menunggu' => 'Menunggu',
+'lunas' => 'Lunas',
+'gagal' => 'Gagal',
+'kedaluwarsa' => 'Kedaluwarsa',
+
+// Tombol dan informasi pembayaran
+'menunggu_pembayaran' => 'Menunggu Pembayaran',
+'bayar_sekarang' => 'Bayar Sekarang',
+'coba_bayar_lagi' => 'Coba Bayar Lagi',
+'buka_halaman_bayar' => 'Buka Lagi Halaman Pembayaran',
+'muat_ulang_status' => 'Muat Ulang Status',
+
+'pesanan_belum_dibayar' => 'Pesanan Anda sudah tersimpan, tetapi pembayarannya belum selesai.',
+'simpan_nomor_bayar' => 'Simpan nomor pesanan Anda, lalu lanjutkan pembayaran dengan tombol di bawah.',
+'pembayaran_diproses' => 'Kami sedang menunggu kabar pembayaran Anda dari Midtrans. Belum membayar? Buka lagi halaman pembayarannya dengan tombol di bawah.',
+'pembayaran_diterima' => 'Pembayaran Anda sudah kami terima. Terima kasih!',
+'pesanan_batal_bayar' => 'Pembayaran pesanan ini gagal atau melewati batas waktu, sehingga pesanan dibatalkan. Silakan pesan ulang.',
+'pesanan_tidak_bisa_dibayar' => 'Pesanan ini sudah tidak dapat dibayar. Silakan pesan ulang.',
+'gagal_membuka_pembayaran' => 'Halaman pembayaran belum dapat dibuka. Silakan coba beberapa saat lagi.',
+'batas_waktu_bayar' => 'Batas waktu pembayaran 24 jam sejak pesanan dibuat.',
 ];

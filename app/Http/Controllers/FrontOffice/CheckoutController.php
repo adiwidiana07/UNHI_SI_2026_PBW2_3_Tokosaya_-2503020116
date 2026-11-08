@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pesanan;
 use App\Models\Produk;
 use App\Services\Keranjang;
+use App\Services\Midtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -125,7 +126,19 @@ class CheckoutController extends Controller
         // ---------- 4. Tandai agar pemesan boleh melihat pesanannya ----------
         session(['pesanan_terakhir' => $pesanan->kode_pesanan]);
 
-        return redirect()->route('checkout.selesai', $pesanan->kode_pesanan);
+        // ---------- 5. Minta halaman pembayaran ----------
+        // Sengaja di luar DB::transaction — lihat penjelasan I.2
+        try {
+            $alamatBayar = Midtrans::mintaHalamanBayar($pesanan);
+        } catch (RuntimeException $e) {
+            // Pesanan sudah aman tersimpan. Yang gagal hanya pembayarannya,
+            // dan itu bisa diulang dari halaman berikut
+            return redirect()
+                ->route('checkout.belum_bayar', $pesanan->kode_pesanan)
+                ->with('gagal', $this->pesanGagalBayar($e));
+        }
+
+        return redirect()->away($alamatBayar);
     }
 
     /** Membuat nomor pesanan, contoh: INV-20260906-A7K3 */
@@ -136,6 +149,17 @@ class CheckoutController extends Controller
         } while (Pesanan::where('kode_pesanan', $kode)->exists());
 
         return $kode;
+    }
+
+    /**
+     * Pesan untuk pembeli saat halaman pembayaran gagal dibuat.
+     * Rincian teknis hanya ikut tampil selama APP_DEBUG=true.
+     */
+    private function pesanGagalBayar(RuntimeException $e): string
+    {
+        $pesan = __('web.gagal_membuka_pembayaran');
+
+        return config('app.debug') ? "{$pesan} ({$e->getMessage()})" : $pesan;
     }
 
     public function selesai(Pesanan $pesanan)
@@ -150,5 +174,47 @@ class CheckoutController extends Controller
         $pesanan->load('detail');
 
         return view('user_front.checkout.selesai', compact('pesanan'));
+    }
+
+    /** Halaman pesanan yang belum terbayar, dengan tombol coba lagi */
+    public function belumBayar(Pesanan $pesanan)
+    {
+        abort_unless(
+            session('pesanan_terakhir') === $pesanan->kode_pesanan,
+            403,
+            'Anda tidak berhak melihat rincian pesanan ini.'
+        );
+
+        $pesanan->load('detail');
+
+        return view('user_front.checkout.belum_bayar', compact('pesanan'));
+    }
+
+    /** Membuka (lagi) halaman pembayaran untuk pesanan yang sama */
+    public function bayar(Pesanan $pesanan)
+    {
+        abort_unless(
+            session('pesanan_terakhir') === $pesanan->kode_pesanan,
+            403,
+            'Anda tidak berhak membayar pesanan ini.'
+        );
+
+        // Yang sudah lunas tidak perlu dibayar lagi
+        if ($pesanan->sudahLunas()) {
+            return redirect()->route('checkout.selesai', $pesanan->kode_pesanan);
+        }
+
+        // Gagal, kedaluwarsa, atau dibatalkan admin — lihat G.4
+        if (! $pesanan->bisaDibayar()) {
+            return redirect()
+                ->route('checkout.selesai', $pesanan->kode_pesanan)
+                ->with('gagal', __('web.pesanan_tidak_bisa_dibayar'));
+        }
+
+        try {
+            return redirect()->away(Midtrans::mintaHalamanBayar($pesanan));
+        } catch (RuntimeException $e) {
+            return back()->with('gagal', $this->pesanGagalBayar($e));
+        }
     }
 }
