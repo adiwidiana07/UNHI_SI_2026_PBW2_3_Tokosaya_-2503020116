@@ -10,12 +10,19 @@ use App\Http\Controllers\FrontOffice\CheckoutController;
 use App\Http\Controllers\FrontOffice\HalamanController;
 use App\Http\Controllers\FrontOffice\KeranjangController;
 use App\Http\Controllers\FrontOffice\ProdukController;
+use App\Http\Controllers\MidtransNotifikasiController;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/bahasa/{kode}', [BahasaController::class, 'ganti'])->name('bahasa.ganti');
 
 Route::get('/', [HalamanController::class, 'home'])->name('home');
 Route::get('/kontak', [HalamanController::class, 'kontak'])->name('kontak');
+
+// Dipanggil server Midtrans, bukan browser, sehingga tidak membawa token CSRF.
+Route::post('/midtrans/notifikasi', MidtransNotifikasiController::class)
+    ->withoutMiddleware([PreventRequestForgery::class])
+    ->name('midtrans.notifikasi');
 
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 // {produk:slug} artinya: carikan produk berdasarkan kolom slug
@@ -69,4 +76,3 @@ Route::controller(CheckoutController::class)
             ->middleware('throttle:5,1')
             ->name('bayar');
     });
-
