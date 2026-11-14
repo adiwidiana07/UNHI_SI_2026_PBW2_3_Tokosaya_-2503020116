@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Pesanan;
+use App\Models\Produk;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\DB;           // dipakai mulai Pertemuan 10
 use Illuminate\Support\Facades\Http;
@@ -149,5 +150,138 @@ class Midtrans
         ]);
 
         return $pesanan->midtrans_redirect_url;
+    }
+
+    /**
+     * Menerapkan notifikasi pembayaran Midtrans ke pesanan.
+     *
+     * Hanya boleh dipanggil setelah tanda tangan notifikasi terbukti sah.
+     * Mengembalikan status_bayar pesanan setelah perubahan.
+     */
+    public static function terapkan(Pesanan $pesanan, array $muatan): string
+    {
+        $statusTransaksi = (string) ($muatan['transaction_status'] ?? '');
+        $statusFraud     = $muatan['fraud_status'] ?? null;
+
+        $statusBaru = self::petakanStatus($statusTransaksi, $statusFraud);
+
+        if ($statusBaru === null) {
+            Log::warning('Status transaksi Midtrans tidak dikenal', [
+                'kode_pesanan'       => $pesanan->kode_pesanan,
+                'transaction_status' => $statusTransaksi,
+            ]);
+
+            return $pesanan->status_bayar;
+        }
+
+        // Tanda tangan sudah sah, tetapi nominal tetap diperiksa agar
+        // pesanan tidak tertandai lunas dengan jumlah yang salah.
+        $nominal = (int) round((float) ($muatan['gross_amount'] ?? 0));
+        $total   = (int) round($pesanan->total);
+
+        if ($nominal !== $total) {
+            Log::critical('Nominal notifikasi Midtrans tidak sama dengan total pesanan', [
+                'kode_pesanan' => $pesanan->kode_pesanan,
+                'nominal'      => $nominal,
+                'total'        => $total,
+            ]);
+
+            return $pesanan->status_bayar;
+        }
+
+        return DB::transaction(function () use ($pesanan, $muatan, $statusTransaksi, $statusBaru) {
+
+            // Kunci baris agar dua notifikasi yang datang bersamaan
+            // tidak mengembalikan stok dua kali.
+            $terkini = Pesanan::lockForUpdate()->find($pesanan->getKey());
+
+            if (! $terkini) {
+                return $pesanan->status_bayar;
+            }
+
+            // Refund/chargeback memang boleh membalik status lunas.
+            $pembalikanDana = in_array($statusTransaksi, [
+                'refund', 'partial_refund', 'chargeback', 'partial_chargeback',
+            ], true);
+
+            // Notifikasi lama tidak boleh menurunkan status yang sudah lunas.
+            if ($terkini->status_bayar === 'lunas'
+                && $statusBaru !== 'lunas'
+                && ! $pembalikanDana) {
+                return $terkini->status_bayar;
+            }
+
+            // Stok kembali hanya untuk transaksi yang benar-benar batal,
+            // bukan untuk refund (barangnya mungkin sudah dikirim).
+            if (! $pembalikanDana
+                && in_array($statusBaru, ['gagal', 'kedaluwarsa'], true)
+                && ! $terkini->stok_dikembalikan) {
+                self::kembalikanStok($terkini);
+                $terkini->stok_dikembalikan = true;
+            }
+
+            // Pembayaran sah yang masuk setelah stok sempat dikembalikan
+            // harus memotong stok lagi supaya jumlahnya tetap benar.
+            if ($statusBaru === 'lunas' && $terkini->stok_dikembalikan) {
+                self::potongStok($terkini);
+                $terkini->stok_dikembalikan = false;
+            }
+
+            $terkini->status_bayar = $statusBaru;
+
+            if (! empty($muatan['payment_type'])) {
+                $terkini->metode_bayar = $muatan['payment_type'];
+            }
+
+            if ($statusBaru === 'lunas' && ! $terkini->dibayar_pada) {
+                $terkini->dibayar_pada = now();
+            }
+
+            $terkini->save();
+
+            return $terkini->status_bayar;
+        });
+    }
+
+    /** Menerjemahkan status Midtrans menjadi status_bayar milik aplikasi. */
+    private static function petakanStatus(string $transaksi, ?string $fraud): ?string
+    {
+        return match ($transaksi) {
+            'capture' => match ($fraud) {
+                'challenge' => 'pending',
+                'deny'      => 'gagal',
+                default     => 'lunas',
+            },
+            'settlement' => 'lunas',
+            'pending', 'authorize' => 'pending',
+            'deny', 'cancel', 'failure' => 'gagal',
+            'refund', 'partial_refund', 'chargeback', 'partial_chargeback' => 'gagal',
+            'expire' => 'kedaluwarsa',
+            default => null,
+        };
+    }
+
+    /** Mengembalikan stok seluruh baris pesanan. */
+    private static function kembalikanStok(Pesanan $pesanan): void
+    {
+        $pesanan->loadMissing('detail');
+
+        foreach ($pesanan->detail as $baris) {
+            if ($baris->produk_id) {
+                Produk::whereKey($baris->produk_id)->increment('stok', $baris->jumlah);
+            }
+        }
+    }
+
+    /** Memotong lagi stok pesanan yang sempat dikembalikan. */
+    private static function potongStok(Pesanan $pesanan): void
+    {
+        $pesanan->loadMissing('detail');
+
+        foreach ($pesanan->detail as $baris) {
+            if ($baris->produk_id) {
+                Produk::whereKey($baris->produk_id)->decrement('stok', $baris->jumlah);
+            }
+        }
     }
 }
