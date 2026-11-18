@@ -22,6 +22,7 @@
                         <th>Jumlah</th>
                         <th>Total</th>
                         <th>Status</th>
+                        <th>Pembayaran</th>
                         <th>Tanggal</th>
                         <th style="width:120px">Aksi</th>
                     </tr>
@@ -41,6 +42,14 @@
                                     {{ ucfirst($pesanan->status) }}
                                 </span>
                             </td>
+                            @php [$label, $jenis] = $pesanan->labelBayar(); @endphp
+                            <td>
+                                <span class="badge text-bg-{{ $jenis }}">{{ $label }}</span>
+
+                                @if ($pesanan->metode_bayar)
+                                    <small class="d-block text-secondary">{{ $pesanan->metode_bayar }}</small>
+                                @endif
+                            </td>
                             <td>{{ $pesanan->created_at->format('d M Y H:i') }}</td>
                             <td>
                                 <a href="{{ route('back-office.pesanan.show', $pesanan) }}"
@@ -49,7 +58,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center py-4 text-secondary">
+                            <td colspan="10"class="text-center py-4 text-secondary">
                                 Belum ada pesanan yang masuk.
                             </td>
                         </tr>

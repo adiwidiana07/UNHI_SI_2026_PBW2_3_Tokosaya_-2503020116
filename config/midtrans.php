@@ -6,6 +6,10 @@ return [
 
     'produksi' => (bool) env('MIDTRANS_PRODUKSI', false),
 
+    // URL webhook yang dikirim lewat header X-Override-Notification.
+    // Kosong = Midtrans memakai Notification URL di dashboard.
+    'notifikasi_url' => env('MIDTRANS_NOTIFIKASI_URL'),
+
     'signature_key' => env('MIDTRANS_SIGNATURE_KEY') ?: env('MIDTRANS_SERVER_KEY'),
 
     'snap_url' => env('MIDTRANS_PRODUKSI', false)

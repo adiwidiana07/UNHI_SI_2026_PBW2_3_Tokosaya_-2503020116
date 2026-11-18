@@ -20,9 +20,18 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetBahasa::class,
         ]);
+
+        // Mengenali HTTPS dari reverse proxy ngrok
+        $middleware->trustProxies(at: '*');
+
+        // Mengecualikan webhook Midtrans dari CSRF
+        $middleware->validateCsrfTokens(except: [
+            'midtrans/notifikasi',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
-    })->create();
+    })
+    ->create();

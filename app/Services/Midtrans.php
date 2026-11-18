@@ -117,6 +117,10 @@ class Midtrans
             $jawaban = Http::withBasicAuth(config('midtrans.server_key'), '')
                 ->acceptJson()
                 ->timeout(15)
+                // Mengganti Notification URL di dashboard, misalnya dengan URL ngrok
+                ->when(config('midtrans.notifikasi_url'), fn ($http, $url) => $http->withHeaders([
+                    'X-Override-Notification' => $url,
+                ]))
                 ->post(config('midtrans.snap_url'), $muatan);
         } catch (ConnectionException $e) {
             // Internet putus, nama domain tidak ditemukan,
@@ -204,27 +208,64 @@ class Midtrans
                 'refund', 'partial_refund', 'chargeback', 'partial_chargeback',
             ], true);
 
+            $lama = $terkini->status_bayar;
+
+            // Pembalikan: untuk Permata, Mandiri Bill, dan Indomaret, settlement
+            // bisa berubah menjadi deny dalam beberapa menit (materi E.3).
+            $pembalikanBayar = $lama === 'lunas' && $statusTransaksi === 'deny';
+
             // Notifikasi lama tidak boleh menurunkan status yang sudah lunas.
-            if ($terkini->status_bayar === 'lunas'
+            if ($lama === 'lunas'
                 && $statusBaru !== 'lunas'
-                && ! $pembalikanDana) {
+                && ! $pembalikanDana
+                && ! $pembalikanBayar) {
+                return $lama;
+            }
+
+            // Pesanan yang sudah gagal/kedaluwarsa tidak boleh hidup lagi
+            // hanya karena notifikasi pending yang datang terlambat.
+            if (in_array($terkini->status_bayar, ['gagal', 'kedaluwarsa'], true)
+                && $statusBaru === 'pending') {
                 return $terkini->status_bayar;
             }
 
             // Stok kembali hanya untuk transaksi yang benar-benar batal,
             // bukan untuk refund (barangnya mungkin sudah dikirim).
             if (! $pembalikanDana
-                && in_array($statusBaru, ['gagal', 'kedaluwarsa'], true)
-                && ! $terkini->stok_dikembalikan) {
-                self::kembalikanStok($terkini);
-                $terkini->stok_dikembalikan = true;
+                && in_array($statusBaru, ['gagal', 'kedaluwarsa'], true)) {
+                $terkini->kembalikanStok();
+
+                // Pesanan yang belum sempat diproses ikut dibatalkan.
+                if ($terkini->status === 'baru') {
+                    $terkini->status = 'batal';
+                }
+
+                if ($pembalikanBayar) {
+                    $terkini->dibayar_pada = null;
+
+                    Log::warning('Pembayaran dibalik oleh Midtrans', [
+                        'kode_pesanan' => $terkini->kode_pesanan,
+                    ]);
+                }
             }
 
-            // Pembayaran sah yang masuk setelah stok sempat dikembalikan
-            // harus memotong stok lagi supaya jumlahnya tetap benar.
-            if ($statusBaru === 'lunas' && $terkini->stok_dikembalikan) {
-                self::potongStok($terkini);
-                $terkini->stok_dikembalikan = false;
+            if ($statusBaru === 'lunas' && $lama !== 'lunas' && $terkini->stok_dikembalikan) {
+                if (in_array($lama, ['gagal', 'kedaluwarsa'], true)) {
+                    // Webhook sendiri yang tadi membatalkan pesanan, lalu uangnya
+                    // ternyata masuk: potong stok lagi dan pulihkan pesanannya.
+                    self::potongStok($terkini);
+                    $terkini->stok_dikembalikan = false;
+
+                    if ($terkini->status === 'batal') {
+                        $terkini->status = 'baru';
+                    }
+                } else {
+                    // Admin yang membatalkan. Keputusan manusia tidak ditimpa
+                    // mesin; uangnya masuk tetapi stoknya sudah dilepas.
+                    Log::warning('Pesanan lunas setelah stoknya dikembalikan', [
+                        'kode_pesanan' => $terkini->kode_pesanan,
+                    ]);
+                }
             }
 
             $terkini->status_bayar = $statusBaru;
@@ -261,16 +302,39 @@ class Midtrans
         };
     }
 
-    /** Mengembalikan stok seluruh baris pesanan. */
-    private static function kembalikanStok(Pesanan $pesanan): void
+    /**
+     * Membaca status terkini sebuah transaksi dari Midtrans,
+     * lalu menerapkannya lewat terapkan() — aturan yang sama dengan webhook.
+     */
+    public static function periksaStatus(Pesanan $pesanan): string
     {
-        $pesanan->loadMissing('detail');
-
-        foreach ($pesanan->detail as $baris) {
-            if ($baris->produk_id) {
-                Produk::whereKey($baris->produk_id)->increment('stok', $baris->jumlah);
-            }
+        if (! $pesanan->midtrans_order_id) {
+            return $pesanan->status_bayar;
         }
+
+        try {
+            $jawaban = Http::withBasicAuth(config('midtrans.server_key'), '')
+                ->acceptJson()
+                ->timeout(15)
+                ->get(config('midtrans.api_url')
+                    . '/v2/' . rawurlencode($pesanan->midtrans_order_id) . '/status');
+        } catch (ConnectionException $e) {
+            // Internet putus berarti "belum tahu", bukan galat 500
+            Log::warning('Midtrans tidak dapat dihubungi saat memeriksa status', [
+                'order_id' => $pesanan->midtrans_order_id,
+                'galat'    => $e->getMessage(),
+            ]);
+
+            return $pesanan->status_bayar;
+        }
+
+        // 404 adalah jawaban wajar: pembeli belum memilih metode,
+        // jadi di sisi Midtrans memang belum ada transaksi
+        if ($jawaban->failed() || (string) $jawaban->json('status_code') === '404') {
+            return $pesanan->status_bayar;
+        }
+
+        return self::terapkan($pesanan, $jawaban->json());
     }
 
     /** Memotong lagi stok pesanan yang sempat dikembalikan. */

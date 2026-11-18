@@ -47,14 +47,14 @@ class DashboardStatsTest extends TestCase
         $response->assertSee('Kategori');
         $response->assertSee('Produk Aktif');
         $response->assertSee('Admin Aktif');
+        $response->assertSee('Pesanan Baru');
 
-        // Angka hardcoded lama (jumlah data dummy) tidak boleh muncul lagi
-        $response->assertDontSee('Pesanan Baru');
-
+        // Semua angka berasal dari database, bukan data dummy hardcoded
         $ringkasan = $response->viewData('ringkasan');
         $this->assertSame(0, $ringkasan['produk']);
         $this->assertSame(0, $ringkasan['kategori']);
         $this->assertSame(0, $ringkasan['produk_aktif']);
+        $this->assertSame(0, $ringkasan['pesanan_baru']);
         $this->assertSame(1, $ringkasan['admin_aktif']);
     }
 

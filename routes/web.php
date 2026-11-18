@@ -75,4 +75,10 @@ Route::controller(CheckoutController::class)
         Route::post('/bayar/{pesanan:kode_pesanan}', 'bayar')
             ->middleware('throttle:5,1')
             ->name('bayar');
+
+        // POST karena bisa mengubah basis data; throttle karena setiap
+        // tekanan tombol menjadi satu panggilan ke Midtrans
+        Route::post('/periksa-bayar/{pesanan:kode_pesanan}', 'periksaBayar')
+            ->middleware('throttle:5,1')
+            ->name('periksa');
     });

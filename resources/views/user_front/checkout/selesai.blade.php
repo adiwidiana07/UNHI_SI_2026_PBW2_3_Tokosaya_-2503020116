@@ -28,10 +28,13 @@
             <p class="text-gray-txt mb-4">{{ __('web.pembayaran_diproses') }}</p>
 
             <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <a href="{{ route('checkout.selesai', $pesanan->kode_pesanan) }}"
-                   class="border border-primary text-primary font-semibold py-2 px-6 rounded-full">
-                    {{ __('web.muat_ulang_status') }}
-                </a>
+                <form method="POST" action="{{ route('checkout.periksa', $pesanan->kode_pesanan) }}">
+                    @csrf
+                    <button type="submit"
+                            class="border border-primary text-primary font-semibold py-2 px-6 rounded-full">
+                        {{ __('web.muat_ulang_status') }}
+                    </button>
+                </form>
 
                 <form method="POST" action="{{ route('checkout.bayar', $pesanan->kode_pesanan) }}">
                     @csrf

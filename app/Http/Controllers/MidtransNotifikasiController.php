@@ -62,10 +62,13 @@ class MidtransNotifikasiController extends Controller
 
         // Notifikasi bisa datang untuk order_id lama setelah pembeli
         // mencoba membayar ulang (order_id diberi akhiran waktu).
+        $orderIdLama = false;
+
         if (! $pesanan) {
             $kodePesanan = preg_replace('/-\d{12}$/', '', (string) $muatan['order_id']);
 
             $pesanan = Pesanan::where('kode_pesanan', $kodePesanan)->first();
+            $orderIdLama = (bool) $pesanan;
         }
 
         // 4. Simpan seluruh notifikasi
@@ -95,7 +98,22 @@ class MidtransNotifikasiController extends Controller
             ], 200);
         }
 
-        // 6. Terapkan status pembayaran
+        // 6. order_id lama hanya boleh melunasi. Kabar "kedaluwarsa" dari
+        //    halaman bayar lama tidak boleh membatalkan halaman bayar baru
+        //    yang sedang dipakai pembeli.
+        if ($orderIdLama
+            && ! in_array($muatan['transaction_status'], ['settlement', 'capture'], true)) {
+            Log::info('Notifikasi order_id lama diabaikan', [
+                'order_id'           => $muatan['order_id'],
+                'transaction_status' => $muatan['transaction_status'],
+            ]);
+
+            return response()->json([
+                'pesan' => 'Diabaikan: order_id lama',
+            ], 200);
+        }
+
+        // 7. Terapkan status pembayaran
         try {
             $hasil = Midtrans::terapkan($pesanan, $muatan);
         } catch (Throwable $e) {

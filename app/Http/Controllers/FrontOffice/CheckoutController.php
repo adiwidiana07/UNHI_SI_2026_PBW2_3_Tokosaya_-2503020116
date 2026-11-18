@@ -190,6 +190,20 @@ class CheckoutController extends Controller
         return view('user_front.checkout.belum_bayar', compact('pesanan'));
     }
 
+    /** Memeriksa status pembayaran langsung ke Midtrans */
+    public function periksaBayar(Pesanan $pesanan)
+    {
+        abort_unless(
+            session('pesanan_terakhir') === $pesanan->kode_pesanan,
+            403,
+            'Anda tidak berhak memeriksa pesanan ini.'
+        );
+
+        Midtrans::periksaStatus($pesanan);
+
+        return redirect()->route('checkout.selesai', $pesanan->kode_pesanan);
+    }
+
     /** Membuka (lagi) halaman pembayaran untuk pesanan yang sama */
     public function bayar(Pesanan $pesanan)
     {
