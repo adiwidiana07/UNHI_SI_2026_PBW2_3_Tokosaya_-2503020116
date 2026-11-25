@@ -77,7 +77,10 @@ class RajaOngkir
 
         $kunci = "ongkir:{$asal}:{$tujuanId}:{$beratGram}:{$kurir}";
 
-        return Cache::remember($kunci, now()->addMinutes(config('rajaongkir.simpan_menit')),
+        // Yang disimpan di cache berupa array biasa, bukan objek Collection:
+        // config/cache.php memasang 'serializable_classes' => false, sehingga
+        // objek tidak bisa dibaca kembali dari cache
+        return collect(Cache::remember($kunci, now()->addMinutes(config('rajaongkir.simpan_menit')),
             function () use ($asal, $tujuanId, $beratGram, $kurir) {
 
                 $data = self::minta('post', 'calculate/district/domestic-cost', [
@@ -98,8 +101,9 @@ class RajaOngkir
                         'estimasi'  => (string) ($baris['etd'] ?? ''),
                     ])
                     ->sortBy('biaya')
-                    ->values();
-            });
+                    ->values()
+                    ->all();
+            }));
     }
 
     /** Satu-satunya tempat yang benar-benar berbicara dengan RajaOngkir */
