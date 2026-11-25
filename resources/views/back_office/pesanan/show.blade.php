@@ -121,6 +121,37 @@
                 </div>
             </div>
 
+            {{-- Pengiriman (Pertemuan 11) --}}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Pengiriman</h3>
+                </div>
+
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Kurir</dt>
+                        <dd class="col-sm-8">
+                            {{ $pesanan->kurir ?? '—' }} {{ $pesanan->layanan_kurir }}
+                        </dd>
+
+                        <dt class="col-sm-4">Estimasi</dt>
+                        <dd class="col-sm-8">{{ $pesanan->estimasi_kirim ?: '—' }}</dd>
+
+                        <dt class="col-sm-4">Berat</dt>
+                        <dd class="col-sm-8">{{ number_format($pesanan->berat_total, 0, ',', '.') }} gram</dd>
+
+                        <dt class="col-sm-4">Ongkos Kirim</dt>
+                        <dd class="col-sm-8">Rp {{ number_format($pesanan->ongkir, 0, ',', '.') }}</dd>
+
+                        <dt class="col-sm-4">Tujuan</dt>
+                        <dd class="col-sm-8">
+                            {{ $pesanan->kecamatan ?? '—' }}, {{ $pesanan->kota }}<br>
+                            {{ $pesanan->provinsi }} {{ $pesanan->kode_pos }}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
             {{-- Data pengiriman --}}
             <div class="card mb-3">
                 <div class="card-header"><h3 class="card-title">Data Pengiriman</h3></div>
