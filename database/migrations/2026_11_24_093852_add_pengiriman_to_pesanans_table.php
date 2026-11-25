@@ -12,16 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pesanans', function (Blueprint $table) {
-               Schema::table('pesanans', function (Blueprint $table) {
-        $table->string('provinsi', 100)->nullable()->after('alamat');
-        $table->string('kecamatan', 100)->nullable()->after('kota');
-        $table->unsignedInteger('kecamatan_id')->nullable()->after('kecamatan');
+            $table->string('provinsi', 100)->nullable()->after('alamat');
+            $table->string('kecamatan', 100)->nullable()->after('kota');
+            $table->unsignedInteger('kecamatan_id')->nullable()->after('kecamatan');
 
-        $table->string('kurir', 20)->nullable()->after('kode_pos');
-        $table->string('layanan_kurir', 50)->nullable()->after('kurir');
-        $table->string('estimasi_kirim', 50)->nullable()->after('layanan_kurir');
-        $table->unsignedInteger('berat_total')->default(0)->after('estimasi_kirim');
-    });
+            $table->string('kurir', 20)->nullable()->after('kode_pos');
+            $table->string('layanan_kurir', 50)->nullable()->after('kurir');
+            $table->string('estimasi_kirim', 50)->nullable()->after('layanan_kurir');
+            $table->unsignedInteger('berat_total')->default(0)->after('estimasi_kirim');
         });
     }
 
@@ -31,13 +29,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pesanans', function (Blueprint $table) {
-            
-    Schema::table('pesanans', function (Blueprint $table) {
-        $table->dropColumn([
-            'provinsi', 'kecamatan', 'kecamatan_id',
-            'kurir', 'layanan_kurir', 'estimasi_kirim', 'berat_total',
-        ]);
-    });
+            $table->dropColumn([
+                'provinsi', 'kecamatan', 'kecamatan_id',
+                'kurir', 'layanan_kurir', 'estimasi_kirim', 'berat_total',
+            ]);
         });
     }
 };
