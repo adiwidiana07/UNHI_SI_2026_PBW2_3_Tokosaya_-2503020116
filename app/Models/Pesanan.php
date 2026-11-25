@@ -7,19 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Pesanan extends Model
 {
     protected $fillable = [
-        'kode_pesanan', 'nama_pemesan', 'email', 'telepon',
-        'alamat', 'kota', 'kode_pos', 'catatan',
-        'subtotal', 'ongkir', 'total', 'status',
-        // ---- baru di Pertemuan 9 ----
-        'status_bayar', 'midtrans_order_id', 'midtrans_redirect_url',
-        'batas_bayar', 'metode_bayar', 'dibayar_pada', 'stok_dikembalikan',
-    ];
+    'kode_pesanan', 'nama_pemesan', 'email', 'telepon',
+    'alamat', 'kota', 'kode_pos', 'catatan',
+    'subtotal', 'ongkir', 'total', 'status',
+    'status_bayar', 'midtrans_order_id', 'midtrans_redirect_url',
+    'batas_bayar', 'metode_bayar', 'dibayar_pada', 'stok_dikembalikan',
+    // ---- baru di Pertemuan 11 ----
+    'provinsi', 'kecamatan', 'kecamatan_id',
+    'kurir', 'layanan_kurir', 'estimasi_kirim', 'berat_total',
+];
 
     protected $casts = [
         'batas_bayar'       => 'datetime',
         'dibayar_pada'      => 'datetime',
         'stok_dikembalikan' => 'boolean',
     ];
+
+    
 
     /** Satu pesanan punya banyak baris rincian */
     public function detail()
