@@ -172,4 +172,21 @@ return [
 'pesanan_tidak_bisa_dibayar' => 'Pesanan ini sudah tidak dapat dibayar. Silakan pesan ulang.',
 'gagal_membuka_pembayaran' => 'Halaman pembayaran belum dapat dibuka. Silakan coba beberapa saat lagi.',
 'batas_waktu_bayar' => 'Batas waktu pembayaran 24 jam sejak pesanan dibuat.',
+
+    // ---------- Pengiriman (Pertemuan 11) ----------
+    'provinsi'              => 'Provinsi',
+    'kecamatan'             => 'Kecamatan',
+    'pilih_provinsi'        => '— Pilih provinsi —',
+    'pilih_kota'            => '— Pilih kota / kabupaten —',
+    'pilih_kecamatan'       => '— Pilih kecamatan —',
+    'pengiriman'            => 'Pengiriman',
+    'pilih_layanan'         => 'Pilih layanan pengiriman',
+    'pilih_alamat_dulu'     => 'Pilih kecamatan tujuan untuk melihat pilihan kurir.',
+    'memuat'                => 'Memuat…',
+    'tidak_ada_layanan'     => 'Tidak ada layanan kurir untuk tujuan ini.',
+    'ongkir_gagal'          => 'Ongkos kirim belum dapat dihitung. Silakan coba beberapa saat lagi.',
+    'berat_total'           => 'Berat total',
+    'estimasi'              => 'estimasi',
+    'layanan_tidak_berlaku' => 'Pilihan layanan pengiriman sudah tidak berlaku. Silakan pilih ulang.',
+    'wilayah_tidak_cocok'   => 'Kota atau kecamatan tidak sesuai dengan provinsi yang dipilih.',
 ];

@@ -11,6 +11,7 @@ use App\Http\Controllers\FrontOffice\HalamanController;
 use App\Http\Controllers\FrontOffice\KeranjangController;
 use App\Http\Controllers\FrontOffice\ProdukController;
 use App\Http\Controllers\MidtransNotifikasiController;
+use App\Http\Controllers\OngkirController;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 
@@ -81,4 +82,15 @@ Route::controller(CheckoutController::class)
         Route::post('/periksa-bayar/{pesanan:kode_pesanan}', 'periksaBayar')
             ->middleware('throttle:5,1')
             ->name('periksa');
+    });
+
+// ---------- Ongkos kirim (Pertemuan 11) ----------
+Route::controller(OngkirController::class)
+    ->prefix('ongkir')
+    ->name('ongkir.')
+    ->middleware('throttle:30,1')
+    ->group(function () {
+        Route::get('/kota/{provinsi}', 'kota')->whereNumber('provinsi')->name('kota');
+        Route::get('/kecamatan/{kota}', 'kecamatan')->whereNumber('kota')->name('kecamatan');
+        Route::post('/hitung', 'hitung')->name('hitung');
     });
