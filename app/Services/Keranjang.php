@@ -117,4 +117,16 @@ class Keranjang
     {
         return self::daftarItem()->sum('subtotal');
     }
+
+    /** Total berat isi keranjang dalam gram */
+    public static function totalBerat(): int
+    {
+        return (int) self::daftarItem()->sum(function ($item) {
+            $berat = $item->produk->berat > 0
+                ? $item->produk->berat
+                : config('rajaongkir.berat_bawaan');
+
+            return $berat * $item->jumlah;
+        });
+    }
 }
